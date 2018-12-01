@@ -4,22 +4,34 @@ import sys.io.File;
 class Main {
 	static function main() {
 		var result:Int = 0;
+		var dupeResult:Int = 0;
+		var dupeFound:Bool = false;
+
+		var dupe = new Map<Int, Bool>();
 		var file = File.read("input");
 		try {
 			while (true) {
 				var line = file.readLine();
 				var dir = line.charAt(0);
 				var num = Std.parseInt(line.substr(1, line.length));
-				
+
+				if (!dupeFound) dupe[result] = true;
 				if (dir == '+') {
 					result += num;
 				} else {
 					result -= num;
 				}
+				if (!dupeFound) {
+					if (dupe.exists(result)) {
+						dupeResult = result;
+						dupeFound = true;
+					}
+				}
 			}
 		}
 		catch ( ex:Eof) {
-			trace(result);
-		}	
+		}
+		trace("Part 1 Result: " + result);
+		trace("Part 2 Result: " + dupeResult);
 	}
 }
