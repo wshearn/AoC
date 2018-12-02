@@ -14,7 +14,7 @@ class Main {
 		var stamp = Timer.stamp();
 		var data = File.getContent("input").split('\n');
 		data.remove("");
-		while (!dupeFound) {
+		while (true) {
 			loops++;
 			for (change in data) {
 				var dir = change.charAt(0);
@@ -36,6 +36,10 @@ class Main {
 			if (!initialResultFound) {
 				initialResult = result;
 				initialResultFound = true;
+			}
+
+			if (initialResultFound && dupeFound) {
+				break;
 			}
 		}
 		var stopStamp = Timer.stamp();
