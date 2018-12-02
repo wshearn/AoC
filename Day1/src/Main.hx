@@ -13,13 +13,13 @@ class Main {
 		
 		var stamp = Timer.stamp();
 		var data = File.getContent("input").split('\n');
+		data.remove("");
 		while (!dupeFound) {
 			loops++;
 			for (change in data) {
 				var dir = change.charAt(0);
 				var num = Std.parseInt(change.substr(1, change.length));
 
-				if (num == null) break;
 				if (!dupeFound) dupe[result] = true;
 
 				if (dir == '+') {
