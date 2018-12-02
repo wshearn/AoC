@@ -19,15 +19,15 @@ class Main {
 			for (change in data) {
 				var dir = change.charAt(0);
 				var num = Std.parseInt(change.substr(1, change.length));
-
+                
 				if (!dupeFound) dupe[result] = true;
-
+                
 				if (dir == '+') {
 					result += num;
 				} else {
 					result -= num;
 				}
-
+                
 				if (dupeFound == false && dupe.exists(result)) {
 					dupeResult = result;
 					dupeFound = true;
@@ -37,13 +37,13 @@ class Main {
 				initialResult = result;
 				initialResultFound = true;
 			}
-
+            
 			if (initialResultFound && dupeFound) {
 				break;
 			}
 		}
 		var stopStamp = Timer.stamp();
-
+        
 		trace("Part 1 Result: " + initialResult);
 		trace("Part 2 Result: " + dupeResult);
 		trace("Part 2 took " + loops + " loops");
