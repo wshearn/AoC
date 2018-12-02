@@ -15,16 +15,19 @@ class Main {
 		var data = File.getContent("input").split('\n');
 		while (!dupeFound) {
 			loops++;
-			for (x in data) {
-				var dir = x.charAt(0);
-				var num = Std.parseInt(x.substr(1, x.length));
+			for (change in data) {
+				var dir = change.charAt(0);
+				var num = Std.parseInt(change.substr(1, change.length));
+
 				if (num == null) break;
 				if (!dupeFound) dupe[result] = true;
+
 				if (dir == '+') {
 					result += num;
 				} else {
 					result -= num;
 				}
+
 				if (dupe.exists(result)) {
 					dupeResult = result;
 					dupeFound = true;
