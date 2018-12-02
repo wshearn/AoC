@@ -1,5 +1,4 @@
 import haxe.Timer;
-import haxe.io.Eof;
 import sys.io.File;
 
 class Main {
