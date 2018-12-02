@@ -6,13 +6,20 @@ class Main {
 		var two = 0;
 		var three = 0;
 
+		var currentMatch = {
+			"key": "",
+			"diff": 9999
+		}
+
 		var data = File.getContent("input").split('\n');
 		data.remove("");
 
-		var p1stamp = Timer.stamp();
-		for (id in data) {
+		var stamp = Timer.stamp();
+		for (x in 0...data.length) {
+			// Part 1
+			var derp:Int = x+1;
 			var labelHash = new Map<String, Int>();
-			var idSplit = id.split("");
+			var idSplit = data[x].split("");
 			for (char in idSplit) {
 				if (!labelHash.exists(char)) {
 					labelHash[char] = 1;
@@ -36,17 +43,9 @@ class Main {
 					break;
 				}
 			}
-		}
-		var p1stopStamp = Timer.stamp();
+			// End Part 1
 
-		var p2stamp = Timer.stamp();
-		var currentMatch = {
-			"key": "",
-			"diff": 9999
-		}
-
-		for (x in 0...data.length) {
-			var derp:Int = x+1;
+			// Part 2
 			for (y in derp...data.length) {
 				var diff:Int = 0;
 				var same:String = "";
@@ -62,13 +61,13 @@ class Main {
 					currentMatch.key = same;
 				}
 			}
+			// End Part 2
 		}
 
-		var p2stopStamp = Timer.stamp();
+		var stopStamp = Timer.stamp();
 	
 		trace("Checksum: " + (two * three));
 		trace("Same key: " + currentMatch.key);
-		trace("Time in seconds it took to run part1: " + (p1stopStamp-p1stamp));
-		trace("Time in seconds it took to run part2: " + (p2stopStamp-p2stamp));
+		trace("Time in seconds it took to run part1: " + (stopStamp-stamp));
 	}
 }
