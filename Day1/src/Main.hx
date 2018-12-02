@@ -28,7 +28,7 @@ class Main {
 					result -= num;
 				}
 
-				if (dupe.exists(result)) {
+				if (dupeFound == false && dupe.exists(result)) {
 					dupeResult = result;
 					dupeFound = true;
 				}
