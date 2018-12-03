@@ -4,13 +4,13 @@ import sys.io.File;
 class Main {
 	static function main() {
         
-		var stamp = Timer.stamp();
-		var data = File.getContent("input").split('\n');
-		data.remove("");
+        var stamp = Timer.stamp();
+        var data = File.getContent("input").split('\n');
+        data.remove("");
         var fabric:Array<Array<Int>> = [ for (x in 0...1000) [ for (y in 0...1000) 0 ]];
         var used = 0;
         var singleSquare = "";
-		for (square in data) {
+        for (square in data) {
             var cords = square.split(' ')[2].split(',');
             cords[1] = cords[1].substring(0, cords[1].length-1);
             
