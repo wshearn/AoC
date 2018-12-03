@@ -4,13 +4,14 @@ import sys.io.File;
 class Main {
 	static function main() {
         
-        var stamp = Timer.stamp();
         var data = File.getContent("input").split('\n');
         data.remove("");
         var fabric:Array<Array<Int>> = [ for (x in 0...1000) [ for (y in 0...1000) 0 ]];
         var used = 0;
         var goodSquares = new List<Int>();
         var singleSquare = "";
+        
+        var stamp = Timer.stamp();
         for (square in data) {
             var goodSquare:Bool = true;
             var squareSplit = square.split(' ');
