@@ -10,7 +10,7 @@ class Main {
         var dupeResult:Int = 0;
         var dupeFound:Bool = false;
         var dupe = new Map<Int, Bool>();
-		
+
         var data = File.getContent("input").split('\n');
         data.remove("");
 
@@ -20,15 +20,15 @@ class Main {
             for (change in data) {
                 var dir = change.charAt(0);
                 var num = Std.parseInt(change.substr(1, change.length));
-                
+
                 if (!dupeFound) dupe[result] = true;
-                
+
                 if (dir == '+') {
                     result += num;
                 } else {
                     result -= num;
                 }
-                
+
                 if (dupeFound == false && dupe.exists(result)) {
                     dupeResult = result;
                     dupeFound = true;
@@ -37,14 +37,14 @@ class Main {
             if (!initialResultFound) {
                 initialResult = result;
                 initialResultFound = true;
-			}
-            
+            }
+
             if (initialResultFound && dupeFound) {
                 break;
             }
         }
         var stopStamp = Timer.stamp();
-        
+
         trace("Part 1 Result: " + initialResult);
         trace("Part 2 Result: " + dupeResult);
         trace("Part 2 took " + loops + " loops");

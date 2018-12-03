@@ -2,7 +2,7 @@ import haxe.Timer;
 import sys.io.File;
 
 class Main {
-	static function main() {
+    static function main() {
         var two = 0;
         var three = 0;
         
@@ -11,14 +11,14 @@ class Main {
             "key2": 0,
             "diff": 9999
         }
-        
+
         var data = File.getContent("input").split('\n');
         data.remove("");
 
         var stamp = Timer.stamp();
         for (x in 0...data.length) {
             // Part 1
-			var nextCode:Int = x+1;
+            var nextCode:Int = x+1;
             var labelHash = new Map<String, Int>();
             var idSplit = data[x].split("");
             for (char in idSplit) {
@@ -45,7 +45,7 @@ class Main {
                 }
             }
             // End Part 1
-            
+
             // Part 2
             for (y in nextCode...data.length) {
                 var diff:Int = 0;
@@ -53,6 +53,9 @@ class Main {
                 for (z in 0...data[x].length) {
                     if (data[x].charAt(z) != data[y].charAt(z)) {
                         diff += 1;
+                        if (diff > currentMatch.diff) {
+                            continue;
+                        }
                     }
                 }
                 if (currentMatch.diff > diff) {
@@ -71,9 +74,9 @@ class Main {
             }
         }
         // End Part 2
-        
+
         var stopStamp = Timer.stamp();
-        
+
         trace("Checksum: " + (two * three));
         trace("Same key: " + sameKey);
         trace("Time in seconds it took to run part1: " + (stopStamp-stamp));
