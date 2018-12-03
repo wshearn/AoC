@@ -18,7 +18,7 @@ class Main {
 		var stamp = Timer.stamp();
 		for (x in 0...data.length) {
 			// Part 1
-			var derp:Int = x+1;
+			var nextCode:Int = x+1;
 			var labelHash = new Map<String, Int>();
 			var idSplit = data[x].split("");
 			for (char in idSplit) {
@@ -47,7 +47,7 @@ class Main {
 			// End Part 1
             
 			// Part 2
-			for (y in derp...data.length) {
+			for (y in nextCode...data.length) {
 				var diff:Int = 0;
 				var same:String = "";
 				for (z in 0...data[x].length) {
