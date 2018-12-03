@@ -50,9 +50,9 @@ class Main {
                     if (fabric[x3][y3] > 1) {
                         goodSquare = false;
                     }
-                    
                 }
             }
+            
             if (goodSquare) {
                 singleSquare = square.split(' ')[0];
                 break;
