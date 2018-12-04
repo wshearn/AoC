@@ -45,11 +45,16 @@ class Main {
                 }
             }
         }
-        var sleepyGuard = {
+        var guardOne = {
             "totalSlept": 0,
             "guard": 0,
             "time": 0,
             "days": 0
+        }
+        var guardTwo = {
+            "time": 0,
+            "amount": 0,
+            "guard": 0
         }
         for (guard in sleepSchedule.keys()) {
             var max = 0;
@@ -61,20 +66,25 @@ class Main {
                     max  = sleepSchedule[guard][sleepTime];
                     time = sleepTime;
                 }
+                if (max > guardTwo.amount) {
+                    guardTwo.time = sleepTime;
+                    guardTwo.amount = max;
+                    guardTwo.guard = guard;
+                }
                 totalSlept += sleepSchedule[guard][sleepTime];
             }
 
-            if (totalSlept > sleepyGuard.totalSlept) {
-                sleepyGuard.guard = guard;
-                sleepyGuard.time = time;
-                sleepyGuard.totalSlept = totalSlept;
-                sleepyGuard.days = max;
+            if (totalSlept > guardOne.totalSlept) {
+                guardOne.guard = guard;
+                guardOne.time = time;
+                guardOne.totalSlept = totalSlept;
+                guardOne.days = max;
             }
         }
         var stopStamp = Timer.stamp();
 
-        trace("Part 1 Result: " + sleepyGuard.time * sleepyGuard.guard);
-        trace("Part 2 Result: ");
+        trace("Part 1 Result: " + guardOne.time * guardOne.guard);
+        trace("Part 2 Result: " + guardTwo.time * guardTwo.guard);
         trace("Time in seconds it took to run: " + (stopStamp-stamp));
     }
 }
