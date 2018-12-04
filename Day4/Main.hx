@@ -12,8 +12,8 @@ class Main {
     }
     static function main() {
 
-        //var data = File.getContent("input").split('\n');
-        var data = File.getContent("input.sample").split('\n');
+        var data = File.getContent("input").split('\n');
+        //var data = File.getContent("input.sample").split('\n');
         data.remove("");
 
         var stamp = Timer.stamp();
