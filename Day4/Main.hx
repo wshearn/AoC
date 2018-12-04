@@ -16,12 +16,24 @@ class Main {
         //var data = File.getContent("input.sample").split('\n');
         data.remove("");
 
-        var stamp = Timer.stamp();
         var currentGuard:Int = 0;
         var sleepSchedule = new Map<Int, Array<Int>>();
-        var isSleeping:Bool = false;
+        var totalSlept = new Map<Int, Int>();
         var prevTime = -1;
 
+        var guardOne = {
+            "totalSlept": 0,
+            "guard": 0,
+            "time": 0
+        }
+        var guardTwo = {
+            "time": 0,
+            "amount": 0,
+            "guard": 0
+        }
+
+
+        var stamp = Timer.stamp();
         for (sleeplog in data) {
             var splitLog = sleeplog.split(' ');
             var strTime = splitLog[1].substring(0, splitLog[1].length-1);
@@ -29,56 +41,34 @@ class Main {
 
             if (splitLog[2] == "Guard") {
                 currentGuard = Std.parseInt(splitLog[3].substring(1, splitLog[3].length));
-                isSleeping = false;
-                prevTime = -1;
+                if (totalSlept.exists(currentGuard) == false) {
+                    totalSlept[currentGuard] = 0;
+                }
             } else if (splitLog[2] == "falls") {
-                if (!isSleeping) {
-                    prevTime = time;
-                    isSleeping = true;
-                }
+                prevTime = time;
             } else if (splitLog[2] == "wakes") {
-                if (isSleeping) {
-                    for (x in prevTime...time) {
-                        increaseSleep(sleepSchedule, currentGuard, x);
-                     }
-                    isSleeping = false;
-                }
-            }
-        }
-        var guardOne = {
-            "totalSlept": 0,
-            "guard": 0,
-            "time": 0,
-            "days": 0
-        }
-        var guardTwo = {
-            "time": 0,
-            "amount": 0,
-            "guard": 0
-        }
-        for (guard in sleepSchedule.keys()) {
-            var max = 0;
-            var time = 0;
-            var totalSlept = 0;
+                totalSlept[currentGuard] += time-prevTime;
+                var max = 0;
 
-            for (sleepTime in 0...59) {
-                if (sleepSchedule[guard][sleepTime] > max) {
-                    max  = sleepSchedule[guard][sleepTime];
-                    time = sleepTime;
-                }
-                if (max > guardTwo.amount) {
-                    guardTwo.time = sleepTime;
-                    guardTwo.amount = max;
-                    guardTwo.guard = guard;
-                }
-                totalSlept += sleepSchedule[guard][sleepTime];
-            }
+                for (x in prevTime...time) {
+                    increaseSleep(sleepSchedule, currentGuard, x);
 
-            if (totalSlept > guardOne.totalSlept) {
-                guardOne.guard = guard;
-                guardOne.time = time;
-                guardOne.totalSlept = totalSlept;
-                guardOne.days = max;
+                    if (totalSlept[currentGuard] >= guardOne.totalSlept) {
+                        if (sleepSchedule[currentGuard][x] > max) {
+                            max = sleepSchedule[currentGuard][x];
+                            guardOne.guard = currentGuard;
+                            guardOne.time = x;
+                            guardOne.totalSlept = totalSlept[currentGuard];
+                        }
+                    }
+
+                    if (sleepSchedule[currentGuard][x] > guardTwo.amount) {
+                        guardTwo.time = x;
+                        guardTwo.amount = sleepSchedule[currentGuard][x];
+                        guardTwo.guard = currentGuard;
+                    }
+
+                }
             }
         }
         var stopStamp = Timer.stamp();
