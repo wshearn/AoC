@@ -30,6 +30,7 @@ class Main {
             if (splitLog[2] == "Guard") {
                 currentGuard = Std.parseInt(splitLog[3].substring(1, splitLog[3].length));
                 isSleeping = false;
+                prevTime = -1;
             } else if (splitLog[2] == "falls") {
                 if (!isSleeping) {
                     prevTime = time;
@@ -37,15 +38,9 @@ class Main {
                 }
             } else if (splitLog[2] == "wakes") {
                 if (isSleeping) {
-                    if (prevTime > time) {
-                        for (x in prevTime...59) {
-                            increaseSleep(sleepSchedule, currentGuard, x);
-                        }
-                    } else {
-                        for (x in prevTime...time) {
-                            increaseSleep(sleepSchedule, currentGuard, x);
-                        }
-                    }
+                    for (x in prevTime...time) {
+                        increaseSleep(sleepSchedule, currentGuard, x);
+                     }
                     isSleeping = false;
                 }
             }
@@ -53,7 +48,8 @@ class Main {
         var sleepyGuard = {
             "totalSlept": 0,
             "guard": 0,
-            "time": 0
+            "time": 0,
+            "days": 0
         }
         for (guard in sleepSchedule.keys()) {
             var max = 0;
@@ -72,6 +68,7 @@ class Main {
                 sleepyGuard.guard = guard;
                 sleepyGuard.time = time;
                 sleepyGuard.totalSlept = totalSlept;
+                sleepyGuard.days = max;
             }
         }
         var stopStamp = Timer.stamp();
