@@ -34,6 +34,9 @@ class Main {
 
 
         var stamp = Timer.stamp();
+        data.sort(function(a,b) {
+            return Reflect.compare(a.toLowerCase(), b.toLowerCase());
+        });
         for (sleeplog in data) {
             var splitLog = sleeplog.split(' ');
             var strTime = splitLog[1].substring(0, splitLog[1].length-1);
