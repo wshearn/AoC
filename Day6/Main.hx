@@ -2,7 +2,6 @@ import haxe.Timer;
 import sys.io.File;
 
 class Main {
-    //static var dataFile = "input.sample";
     static var dataFile = "input";
     static function main() {
 
@@ -15,9 +14,11 @@ class Main {
             "y": 0
         }
         for (cord in 0...data.length) {
+            var splitCord = data[cord].split(", ");
+
             var newMap = {
-                "x": Std.parseInt(data[cord].split(", ")[1]),
-                "y": Std.parseInt(data[cord].split(", ")[0])
+                "x": Std.parseInt(splitCord[0]),
+                "y": Std.parseInt(splitCord[1])
             }
             parsedCords[cord] = newMap;
             if (bottomRight.x < parsedCords[cord].y) {
@@ -37,7 +38,6 @@ class Main {
         var globDist:Int = 10000;
 
         for (x in 0...bottomRight.x) {
-
             for (y in 0...bottomRight.y) {
                 var closestDist:Int = 999999;
                 var closestWhich:Int = -1;
@@ -48,24 +48,20 @@ class Main {
                     var yd = Math.abs(y - parsedCords[z].y);
 
                     var dist = xd+yd;
-                    if (dist == closestDist) {
-                        closestWhich = -1;
-                    }
-
-                    if (x == parsedCords[z].x && y == parsedCords[z].y) {
-                        closestDist = -1;
-                        closestWhich = z;
-                    }
 
                     if (dist < closestDist) {
                         closestDist = Std.int(dist);
                         closestWhich = z;
+                    } else if (dist == closestDist) {
+                        closestWhich = -1;
                     }
+
                     pointDistGlob += dist;
                 }
                 if (x == 0 || x == bottomRight.x-1 || y == 0 || y == bottomRight.y-1) {
                     count[closestWhich] = -1;
                 }
+
                 if (closestWhich != -1 && count[closestWhich] != -1) {
                     count[closestWhich] += 1;
                 }
