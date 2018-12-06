@@ -8,7 +8,7 @@ class Main {
 
         var stamp = Timer.stamp();
         var data = File.getContent(dataFile).split('\n');
-        data.remove("");
+        //data.remove("");
 
         var bottomRight = {
             "x": 0,
@@ -33,16 +33,15 @@ class Main {
 
         for (x in 0...bottomRight.x) {
             for (y in 0...bottomRight.y) {
-                var closestDist:Float = 999999.0;
+                var closestDist:Int = 999999;
                 var closestWhich:Int = -1;
 
-                // Something is fishy here
                 for (z in 0...data.length) {
                     var cordx = Std.parseInt(data[z].split(", ")[0]);
                     var cordy = Std.parseInt(data[z].split(", ")[1]);
 
-                    var xd = Math.abs(x - cordx);
-                    var yd = Math.abs(y - cordy);
+                    var xd = Std.int(Math.abs(x - cordx));
+                    var yd = Std.int(Math.abs(y - cordy));
 
                     var dist = xd+yd;
                     if (dist < closestDist) {
@@ -59,14 +58,13 @@ class Main {
             }
         }
 
-        trace(count);
-        while(count.remove(-1)){}
         count.sort(function(x, y) {
+            if (x == -1) return 1;
+            if (y == -1) return -1;
             if (x > y) return -1;
             if (x == y) return 0;
             return 1;
         });
-        
         var stopStamp = Timer.stamp();
 
         trace("Part 1 Result: " + count[0]);
