@@ -15,9 +15,8 @@ class Main {
                 "x": Std.parseInt(data[cord].split(", ")[1]),
                 "y": Std.parseInt(data[cord].split(", ")[0])
             }
-            parsedCords.insert(cord, newMap);
+            parsedCords[cord] = newMap;
         }
-        //data.remove("");
 
         var bottomRight = {
             "x": 0,
