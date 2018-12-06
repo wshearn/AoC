@@ -8,6 +8,15 @@ class Main {
 
         var stamp = Timer.stamp();
         var data = File.getContent(dataFile).split('\n');
+        data.remove("");
+        var parsedCords:Array<{y: Null<Int>, x: Null<Int>}> = [ for (x in 0...data.length-1) {x: -1, y: -1} ];
+        for (cord in 0...data.length) {
+            var newMap = {
+                "x": Std.parseInt(data[cord].split(", ")[1]),
+                "y": Std.parseInt(data[cord].split(", ")[0])
+            }
+            parsedCords.insert(cord, newMap);
+        }
         //data.remove("");
 
         var bottomRight = {
@@ -15,15 +24,12 @@ class Main {
             "y": 0
         }
         // Find the bottom right most cord
-        for (cord in data) {
-            var x = Std.parseInt(cord.split(", ")[1]);
-            var y = Std.parseInt(cord.split(", ")[0]);
-
-            if (bottomRight.x < x) {
-                bottomRight.x = x;
+        for (cord in parsedCords) {
+            if (bottomRight.x < cord.y) {
+                bottomRight.x = cord.x;
             }
-            if (bottomRight.y < y) {
-                bottomRight.y = y;
+            if (bottomRight.y < cord.y) {
+                bottomRight.y = cord.y;
             }
         }
         bottomRight.x += 100;
@@ -41,18 +47,15 @@ class Main {
                 var pointDistGlob:Int = 0;
 
                 for (z in 0...data.length) {
-                    var cordx = Std.parseInt(data[z].split(", ")[1]);
-                    var cordy = Std.parseInt(data[z].split(", ")[0]);
-
-                    var xd = Std.int(Math.abs(x - cordx));
-                    var yd = Std.int(Math.abs(y - cordy));
+                    var xd = Std.int(Math.abs(x - parsedCords[z].x));
+                    var yd = Std.int(Math.abs(y - parsedCords[z].y));
 
                     var dist = xd+yd;
                     if (dist == closestDist) {
                         closestWhich = -1;
                     }
 
-                    if (x == cordx && y == cordy) {
+                    if (x == parsedCords[z].x && y == parsedCords[z].y) {
                         closestDist = -1;
                         closestWhich = z;
                     }
