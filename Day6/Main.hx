@@ -46,10 +46,22 @@ class Main {
                     var cordx = Std.parseInt(data[z].split(", ")[0]);
                     var cordy = Std.parseInt(data[z].split(", ")[1]);
 
-                    var xd = cordx-x;
-                    var yd = cordy-y;
+                    var xd;
+                    var yd;
+                    if (cordx > x) {
+                        xd = cordx-x;
+                    } else {
+                        xd = x-cordx;
+                    }
+                    if (cordy > y) {
+                        yd = cordy-y;
+                    } else {
+                        yd = y-cordy;
+                    }
 
-                    var dist = Math.round(Math.sqrt(xd*xd + yd*yd));
+                    var dist = xd+yd;
+                    trace(dist);
+                    trace(closestDist);
                     if (dist < closestDist) {
                         closestDist = dist;
                         closestWhich = z+1;
@@ -59,7 +71,7 @@ class Main {
                     }
                 }
                 grid[x][y] = closestWhich;
-                if (x == 0 || x == bottomRight.x || y == 0 || y == bottomRight.y) {
+                if (x == 0 || x == bottomRight.x-1 || y == 0 || y == bottomRight.y-1) {
                     count[closestWhich] = -1;
                 }
                 if (closestWhich != -1 && count[closestWhich] != -1) {
@@ -68,6 +80,7 @@ class Main {
             }
         }
 
+        trace(grid);
         trace(count);
         
         var stopStamp = Timer.stamp();
