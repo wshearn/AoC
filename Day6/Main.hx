@@ -2,8 +2,8 @@ import haxe.Timer;
 import sys.io.File;
 
 class Main {
-    static var dataFile = "input.sample";
-    //static var dataFile = "input";
+    //static var dataFile = "input.sample";
+    static var dataFile = "input";
     static function main() {
 
         var stamp = Timer.stamp();
@@ -28,13 +28,8 @@ class Main {
         }
         bottomRight.x += 1;
         bottomRight.y += 1;
-        var grid:Array<Array<Int>> = [ for (x in 0...bottomRight.x) [ for (y in 0...bottomRight.y) -1 ]];
-        var count:Array<Int> = [ for (x in 0...data.length+1) 0 ];
-        for (z in 0...data.length) {
-            var x = Std.parseInt(data[z].split(", ")[0]);
-            var y = Std.parseInt(data[z].split(", ")[1]);
-            grid[x][y] = z;
-        }
+
+        var count:Array<Int> = [ for (x in 0...data.length) 0 ];
 
         for (x in 0...bottomRight.x) {
             for (y in 0...bottomRight.y) {
@@ -46,31 +41,15 @@ class Main {
                     var cordx = Std.parseInt(data[z].split(", ")[0]);
                     var cordy = Std.parseInt(data[z].split(", ")[1]);
 
-                    var xd;
-                    var yd;
-                    if (cordx > x) {
-                        xd = cordx-x;
-                    } else {
-                        xd = x-cordx;
-                    }
-                    if (cordy > y) {
-                        yd = cordy-y;
-                    } else {
-                        yd = y-cordy;
-                    }
+                    var xd = Math.abs(x - cordx);
+                    var yd = Math.abs(y - cordy);
 
                     var dist = xd+yd;
-                    trace(dist);
-                    trace(closestDist);
                     if (dist < closestDist) {
                         closestDist = dist;
-                        closestWhich = z+1;
-                    } else if (dist == closestDist) {
-                        closestDist = 0;
-                        closestWhich = -1;
+                        closestWhich = z;
                     }
                 }
-                grid[x][y] = closestWhich;
                 if (x == 0 || x == bottomRight.x-1 || y == 0 || y == bottomRight.y-1) {
                     count[closestWhich] = -1;
                 }
@@ -80,12 +59,17 @@ class Main {
             }
         }
 
-        trace(grid);
         trace(count);
+        while(count.remove(-1)){}
+        count.sort(function(x, y) {
+            if (x > y) return -1;
+            if (x == y) return 0;
+            return 1;
+        });
         
         var stopStamp = Timer.stamp();
 
-        trace("Part 1 Result: ");
+        trace("Part 1 Result: " + count[0]);
         trace("Part 2 Result: ");
         trace("Time in seconds it took to run: " + (stopStamp-stamp));
     }
