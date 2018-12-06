@@ -56,7 +56,7 @@ class Main {
                         closestDist = -1;
                         closestWhich = z;
                     }
- 
+
                     if (dist < closestDist) {
                         closestDist = dist;
                         closestWhich = z;
