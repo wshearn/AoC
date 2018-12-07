@@ -2,58 +2,72 @@ import haxe.Timer;
 import sys.io.File;
 
 class Main {
-    //static var dataFile = "input.sample";
     static var dataFile = "input";
     static function main() {
 
         var stamp = Timer.stamp();
         var data = File.getContent(dataFile).split('\n');
-        //data.remove("");
-
+        data.remove("");
+        var parsedCords:Array<{y: Null<Int>, x: Null<Int>}> = [ for (x in 0...data.length-1) {x: -1, y: -1} ];
         var bottomRight = {
             "x": 0,
             "y": 0
         }
-        // Find the bottom right most cord
-        for (cord in data) {
-            var x = Std.parseInt(cord.split(", ")[0]);
-            var y = Std.parseInt(cord.split(", ")[1]);
+        for (cord in 0...data.length) {
+            var splitCord = data[cord].split(", ");
 
-            if (bottomRight.x < x) {
-                bottomRight.x = x;
+            var newMap = {
+                "x": Std.parseInt(splitCord[0]),
+                "y": Std.parseInt(splitCord[1])
             }
-            if (bottomRight.y < y) {
-                bottomRight.y = y;
+            parsedCords[cord] = newMap;
+            if (bottomRight.x < parsedCords[cord].y) {
+                bottomRight.x = parsedCords[cord].x;
+            }
+            if (bottomRight.y < parsedCords[cord].y) {
+                bottomRight.y = parsedCords[cord].y;
             }
         }
-        bottomRight.x += 1;
-        bottomRight.y += 1;
+
+        // Find the bottom right most cord
+        bottomRight.x += 100;
+        bottomRight.y += 100;
 
         var count:Array<Int> = [ for (x in 0...data.length) 0 ];
+        var glob:Int = 0;
+        var globDist:Int = 10000;
 
         for (x in 0...bottomRight.x) {
             for (y in 0...bottomRight.y) {
                 var closestDist:Int = 999999;
                 var closestWhich:Int = -1;
+                var pointDistGlob:Float = 0;
 
                 for (z in 0...data.length) {
-                    var cordx = Std.parseInt(data[z].split(", ")[0]);
-                    var cordy = Std.parseInt(data[z].split(", ")[1]);
-
-                    var xd = Std.int(Math.abs(x - cordx));
-                    var yd = Std.int(Math.abs(y - cordy));
+                    var xd = Math.abs(x - parsedCords[z].x);
+                    var yd = Math.abs(y - parsedCords[z].y);
 
                     var dist = xd+yd;
+
                     if (dist < closestDist) {
-                        closestDist = dist;
+                        closestDist = Std.int(dist);
                         closestWhich = z;
+                    } else if (dist == closestDist) {
+                        closestWhich = -1;
                     }
+
+                    pointDistGlob += dist;
                 }
                 if (x == 0 || x == bottomRight.x-1 || y == 0 || y == bottomRight.y-1) {
                     count[closestWhich] = -1;
                 }
+
                 if (closestWhich != -1 && count[closestWhich] != -1) {
                     count[closestWhich] += 1;
+                }
+
+                if (pointDistGlob < globDist) {
+                    glob++;
                 }
             }
         }
@@ -68,7 +82,7 @@ class Main {
         var stopStamp = Timer.stamp();
 
         trace("Part 1 Result: " + count[0]);
-        trace("Part 2 Result: ");
+        trace("Part 2 Result: " + glob);
         trace("Time in seconds it took to run: " + (stopStamp-stamp));
     }
 }
