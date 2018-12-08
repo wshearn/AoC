@@ -1,43 +1,12 @@
 import haxe.Timer;
 import sys.io.File;
 
+/*
+Data Format
+
+childrencount metadataCount [0, childrenEnd?(one per childrenCount)] [0, metadataCount]
+*/
 class Main {
-    static function getMetaCount(start:Int = 0, parsedData:Array<Int>):Array<Int> {
-        var childCount = parsedData[start];
-        var metaCount = parsedData[start+1];
-        var totalMeta = 0;
-        var metaStart = start+2;
-        var size = 2; // Min size is 2
-
-        var nextChildStart = 0;
-        if (childCount == 0) {
-            nextChildStart += start+metaCount;
-        } else {
-            nextChildStart += start+2;
-        }
-
-        for (x in 0...childCount) {
-            var result = getMetaCount(nextChildStart, parsedData);
-            nextChildStart += result[0];
-            totalMeta += result[1];
-            metaStart += result[2];
-            size += result[2]; // Increase size by the size of the child
-        }
-
-        trace("size: " + size + " - metaCount: " + metaCount);
-
-        size += metaCount; // Add how many metadata items we have to size
-
-        for (x in 0...metaCount) {
-            totalMeta += parsedData[metaStart + x];
-        }
-
-        var res = new Array();
-        res.push(nextChildStart);
-        res.push(totalMeta); // Meta amount
-        res.push(size);
-        return res;
-    }
     static function main() {
 
         var stamp = Timer.stamp();
@@ -46,19 +15,54 @@ class Main {
         var parsedData:Array<Int> = [ for (x in 0...data.length) Std.parseInt(data[x]) ];
         var start = 0;
         var part1Result = 0;
+
+        parsedData.reverse();
+        var inputIsEven = true;
+        if (parsedData.length % 2 != 0) {
+            inputIsEven = false;
+        }
+        trace(parsedData);
+        var maxLength = Std.int(Math.abs(parsedData.length/2+1));
+        var dataDepth  = [ for (x in 0...maxLength) { "children": 0, "metaData": 0 } ];
+        var currentPoint = 0;
+        var currentDepth = 0;
+        var totalData = 0;
         while (true) {
-            if (start >= data.length) {
-                break;
+            while (currentPoint <= parsedData.length-1) {
+                trace(parsedData);
+                var childNodes = parsedData.pop(); currentPoint++;
+                var metaNodes = parsedData.pop(); currentPoint++;
+                trace(childNodes);
+                trace(dataDepth);
+                trace(totalData);
+
+                dataDepth[currentDepth] = {
+                    "children": childNodes,
+                    "metaData": metaNodes
+                };
+                trace(currentDepth);
+                trace(dataDepth[currentDepth].children);
+                for (x in 0...dataDepth[currentDepth].children) {
+                    currentDepth++;
+                    break;
+                }
+
+
+                for (x in 0 ... dataDepth[currentDepth].metaData) {
+                    totalData += parsedData.pop(); currentPoint++;
+                }
+
+                currentDepth--;
+                trace(parsedData);
             }
 
-            var result = getMetaCount(start, parsedData);
-            part1Result += result[1];
-            start += result[2];
+            if (currentPoint >= parsedData.length-1) {
+                break;
+            }
         }
-
         var stopStamp = Timer.stamp();
 
-        trace("Part 1 Result: " + part1Result);
+        trace("Part 1 Result: " + totalData);
         trace("Part 2 Result: ");
         trace("Time in seconds it took to run: " + (stopStamp-stamp));
     }
