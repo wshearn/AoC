@@ -1,3 +1,0 @@
-extensions=".hx.hxml.bat";
-
-fkey_command_win[1] = {"build.bat", "*compilation*", true};
