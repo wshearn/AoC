@@ -21,21 +21,22 @@ namespace Day8
             for (var x = 0; x < numberOfMetadata; x++)
             {
                 metadata[x] = parsedData.Pop();
+                metaSum += metadata[x];
             }
             this.parent = parent;
         }
 
-        public int getAllMetadataCount()
+        public int GetAllMetadataCount()
         {
             int sum = 0;
-            sum += metadata.Sum();
+            sum += metaSum;
             for (var x = 0; x < numberOfChildren; x++)
             {
-                sum += childBlocks[x].getAllMetadataCount();
+                sum += childBlocks[x].GetAllMetadataCount();
             }
             return sum;
         }
-        public int getMetadataCount()
+        public int GetMetadataCount()
         {
             if (numberOfChildren > 0)
             {
@@ -44,13 +45,13 @@ namespace Day8
                 {
                     if (metadata[x] != 0 && metadata[x] <= numberOfChildren)
                     {
-                        sum += childBlocks[metadata[x]-1].getMetadataCount();
+                        sum += childBlocks[metadata[x]-1].GetMetadataCount();
                     }
                 }
 
                 return sum;
             }
-            return metadata.Sum();
+            return metaSum;
         }
 
         private readonly int numberOfChildren = -1;
@@ -58,6 +59,7 @@ namespace Day8
         private int[] metadata;
         private readonly Block[] childBlocks;
         private readonly Block parent;
+        private readonly int metaSum = 0;
     }
     class Program
     {
@@ -82,8 +84,8 @@ namespace Day8
             int answerPartTwo = 0;
             //Block[] blocks = new Block[maxLength];
             Block masterBlock = new Block(parsedData, null);
-            answerPartOne = masterBlock.getAllMetadataCount();
-            answerPartTwo = masterBlock.getMetadataCount();
+            answerPartOne = masterBlock.GetAllMetadataCount();
+            answerPartTwo = masterBlock.GetMetadataCount();
 
             Console.WriteLine(answerPartOne);
             Console.WriteLine(answerPartTwo);
