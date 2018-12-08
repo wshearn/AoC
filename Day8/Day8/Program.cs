@@ -1,14 +1,12 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Diagnostics;
 
 namespace Day8
 {
     class Block
     {
-        public Block(Stack<int> parsedData, Block parent)
+        public Block(Stack<int> parsedData)
         {
             numberOfChildren = parsedData.Pop();
             numberOfMetadata = parsedData.Pop();
@@ -16,14 +14,13 @@ namespace Day8
             childBlocks = new Block[numberOfChildren];
             for (var x = 0; x < numberOfChildren; x++)
             {
-                childBlocks[x] = new Block(parsedData, this);
+                childBlocks[x] = new Block(parsedData);
             }
             for (var x = 0; x < numberOfMetadata; x++)
             {
                 metadata[x] = parsedData.Pop();
                 metaSum += metadata[x];
             }
-            this.parent = parent;
         }
 
         public int GetAllMetadataCount()
@@ -56,9 +53,8 @@ namespace Day8
 
         private readonly int numberOfChildren = -1;
         private readonly int numberOfMetadata = -1;
-        private int[] metadata;
+        private readonly int[] metadata;
         private readonly Block[] childBlocks;
-        private readonly Block parent;
         private readonly int metaSum = 0;
     }
     class Program
@@ -67,8 +63,8 @@ namespace Day8
 
         static void Main(string[] args)
         {
-            // The code provided will print ‘Hello World’ to the console.
-            // Press Ctrl+F5 (or go to Debug > Start Without Debugging) to run your app.
+            Stopwatch stopWatch = new Stopwatch();
+            stopWatch.Start();
             string data = System.IO.File.ReadAllText(DATAFILE);
             string[] splitData = data.Split(' ');
             Stack<int> parsedData = new Stack<int>();
@@ -82,13 +78,17 @@ namespace Day8
             int maxLength = parsedData.Count / 2 + 1;
             int answerPartOne = 0;
             int answerPartTwo = 0;
-            //Block[] blocks = new Block[maxLength];
-            Block masterBlock = new Block(parsedData, null);
+
+            Block masterBlock = new Block(parsedData);
             answerPartOne = masterBlock.GetAllMetadataCount();
             answerPartTwo = masterBlock.GetMetadataCount();
+            stopWatch.Stop();
+            TimeSpan ts = stopWatch.Elapsed;
 
-            Console.WriteLine(answerPartOne);
-            Console.WriteLine(answerPartTwo);
+            Console.WriteLine("Part 1: " + answerPartOne);
+            Console.WriteLine("Part 2: " + answerPartTwo);
+            Console.WriteLine("RunTime: " + ts);
+
             Console.ReadKey();
         }
     }
