@@ -14,29 +14,29 @@ namespace Day9
 
             string data = System.IO.File.ReadAllText(DATAFILE);
             string[] splitData = data.Split(' ');
-            Int64 numberOfPlayers = 0;
-            Int64.TryParse(splitData[0], out numberOfPlayers);
+            int numberOfPlayers = 0;
+            int.TryParse(splitData[0], out numberOfPlayers);
 
-            Int64 lastMarble = 0;
-            Int64.TryParse(splitData[6], out lastMarble);
+            int lastMarble = 0;
+            int.TryParse(splitData[6], out lastMarble);
             var partOneEnd = lastMarble;
             lastMarble = lastMarble * 100;
             long answerPartOne = 0;
             long answerPartTwo = 0;
 
-            var tempMarbles = new LinkedListNode<Int64>[lastMarble+1];
+            var tempMarbles = new LinkedListNode<int>[lastMarble+1];
 
             for (var x = 0; x <= lastMarble; x++) {
-                tempMarbles[x] = new LinkedListNode<Int64>(x);
+                tempMarbles[x] = new LinkedListNode<int>(x);
             }
 
             // Game setup.
-            LinkedList<Int64> marbles = new LinkedList<Int64>();
+            LinkedList<int> marbles = new LinkedList<int>();
             long[] elves = new long[numberOfPlayers];
             var currentMarble = marbles.AddFirst(0);
 
             var currentElf = 0;
-            for (Int64 x = 1; x <= lastMarble; x++) {
+            for (int x = 1; x <= lastMarble; x++) {
                 var nextMarble = tempMarbles[x];
 
                 if (x % 23 == 0) {
