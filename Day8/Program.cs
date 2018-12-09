@@ -88,8 +88,6 @@ namespace Day8
             Console.WriteLine("Part 1: " + answerPartOne);
             Console.WriteLine("Part 2: " + answerPartTwo);
             Console.WriteLine("RunTime: " + ts);
-
-            Console.ReadKey();
         }
     }
 }

@@ -1,0 +1,36 @@
+{
+   // Use IntelliSense to find out which attributes exist for C# debugging
+   // Use hover for the description of the existing attributes
+   // For further information visit https://github.com/OmniSharp/omnisharp-vscode/blob/master/debugger-launchjson.md
+   "version": "0.2.0",
+   "configurations": [
+        {
+            "name": "Day 8",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build - day8",
+            // If you have changed target frameworks, make sure to update the program path.
+            "program": "${workspaceFolder}/Day8/bin/Debug/netcoreapp2.1/Day8.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/Day8",
+            // For more information about the 'console' field, see https://github.com/OmniSharp/omnisharp-vscode/blob/master/debugger-launchjson.md#console-terminal-window
+            "console": "internalConsole",
+            "stopAtEntry": false,
+            "internalConsoleOptions": "openOnSessionStart"
+        },
+        {
+            "name": "Day 9",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build - day9",
+            // If you have changed target frameworks, make sure to update the program path.
+            "program": "${workspaceFolder}/Day9/bin/Debug/netcoreapp2.1/Day9.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/Day9",
+            // For more information about the 'console' field, see https://github.com/OmniSharp/omnisharp-vscode/blob/master/debugger-launchjson.md#console-terminal-window
+            "console": "internalConsole",
+            "stopAtEntry": false,
+            "internalConsoleOptions": "openOnSessionStart"
+        }
+    ,]
+}
