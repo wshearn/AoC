@@ -14,29 +14,30 @@ namespace Day9
 
             string data = System.IO.File.ReadAllText(DATAFILE);
             string[] splitData = data.Split(' ');
-            int numberOfPlayers = 0;
-            int.TryParse(splitData[0], out numberOfPlayers);
+            Int32 numberOfPlayers = 0;
+            Int32.TryParse(splitData[0], out numberOfPlayers);
 
-            int lastMarble = 0;
-            int.TryParse(splitData[6], out lastMarble);
+            Int32 lastMarble = 0;
+            Int32.TryParse(splitData[6], out lastMarble);
             var partOneEnd = lastMarble;
             lastMarble = lastMarble * 100;
-            long answerPartOne = 0;
-            long answerPartTwo = 0;
+            Int64 answerPartOne = 0;
+            Int64 answerPartTwo = 0;
 
-            var tempMarbles = new LinkedListNode<int>[lastMarble+1];
+            var tempMarbles = new LinkedListNode<Int32>[lastMarble+1];
 
             for (var x = 0; x <= lastMarble; x++) {
-                tempMarbles[x] = new LinkedListNode<int>(x);
+                tempMarbles[x] = new LinkedListNode<Int32>(x);
             }
 
-            // Game setup.
-            LinkedList<int> marbles = new LinkedList<int>();
-            long[] elves = new long[numberOfPlayers];
-            var currentMarble = marbles.AddFirst(0);
+            LinkedList<Int32> marbles = new LinkedList<Int32>();
+            Int64[] elves = new Int64[numberOfPlayers];
 
+            var currentMarble = marbles.AddFirst(0);
             var currentElf = 0;
-            for (int x = 1; x <= lastMarble; x++) {
+
+            for (Int32 x = 1; x <= lastMarble; x++) {
+                currentElf = (currentElf + 1) % numberOfPlayers;
                 var nextMarble = tempMarbles[x];
 
                 if (x % 23 == 0) {
@@ -53,23 +54,12 @@ namespace Day9
                     currentMarble = currentMarble.Next;
                     marbles.Remove(currentMarble.Previous);
                 } else {
-                    if (x == 1) {
-                        // Edge case for first marble
-                        marbles.AddAfter(currentMarble, nextMarble);
+                    if (currentMarble.Next != null) {
+                        marbles.AddAfter(currentMarble.Next, nextMarble);
                     } else {
-                        if (currentMarble.Next != null) {
-                            marbles.AddAfter(currentMarble.Next, nextMarble);
-                        } else {
-                            marbles.AddAfter(marbles.First, nextMarble);
-                        }
+                        marbles.AddAfter(marbles.First, nextMarble);
                     }
                     currentMarble = nextMarble;
-                }
-
-
-                currentElf++;
-                if (currentElf >= numberOfPlayers) {
-                    currentElf = 0;
                 }
 
                 if (x == partOneEnd) {

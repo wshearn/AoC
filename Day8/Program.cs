@@ -6,11 +6,11 @@ namespace Day8
 {
     class Block
     {
-        public Block(Stack<int> parsedData)
+        public Block(Queue<Int32> parsedData)
         {
-            numberOfChildren = parsedData.Pop();
-            numberOfMetadata = parsedData.Pop();
-            metadata = new int[numberOfMetadata];
+            numberOfChildren = parsedData.Dequeue();
+            numberOfMetadata = parsedData.Dequeue();
+            metadata = new Int32[numberOfMetadata];
             childBlocks = new Block[numberOfChildren];
             for (var x = 0; x < numberOfChildren; x++)
             {
@@ -18,14 +18,14 @@ namespace Day8
             }
             for (var x = 0; x < numberOfMetadata; x++)
             {
-                metadata[x] = parsedData.Pop();
+                metadata[x] = parsedData.Dequeue();
                 metaSum += metadata[x];
             }
         }
 
-        public int GetAllMetadataCount()
+        public Int32 GetAllMetadataCount()
         {
-            int sum = 0;
+            Int32 sum = 0;
             sum += metaSum;
             for (var x = 0; x < numberOfChildren; x++)
             {
@@ -33,11 +33,11 @@ namespace Day8
             }
             return sum;
         }
-        public int GetMetadataCount()
+        public Int32 GetMetadataCount()
         {
             if (numberOfChildren > 0)
             {
-                int sum = 0;
+                Int32 sum = 0;
                 for (var x = 0; x < numberOfMetadata; x++)
                 {
                     if (metadata[x] != 0 && metadata[x] <= numberOfChildren)
@@ -51,11 +51,11 @@ namespace Day8
             return metaSum;
         }
 
-        private readonly int numberOfChildren = -1;
-        private readonly int numberOfMetadata = -1;
-        private readonly int[] metadata;
+        private readonly Int32 numberOfChildren = -1;
+        private readonly Int32 numberOfMetadata = -1;
+        private readonly Int32[] metadata;
         private readonly Block[] childBlocks;
-        private readonly int metaSum = 0;
+        private readonly Int32 metaSum = 0;
     }
     class Program
     {
@@ -67,17 +67,17 @@ namespace Day8
             stopWatch.Start();
             string data = System.IO.File.ReadAllText(DATAFILE);
             string[] splitData = data.Split(' ');
-            Stack<int> parsedData = new Stack<int>();
-            for (var x = splitData.Length-1; x >= 0; x--)
+            Queue<Int32> parsedData = new Queue<Int32>();
+            foreach (var x in splitData)
             {
-                int parsedInt = -1;
-                int.TryParse(splitData[x], out parsedInt);
-                parsedData.Push(parsedInt);
+                Int32 parsedInt32 = -1;
+                Int32.TryParse(x, out parsedInt32);
+                parsedData.Enqueue(parsedInt32);
             }
 
-            int maxLength = parsedData.Count / 2 + 1;
-            int answerPartOne = 0;
-            int answerPartTwo = 0;
+            Int32 maxLength = parsedData.Count / 2 + 1;
+            Int32 answerPartOne = 0;
+            Int32 answerPartTwo = 0;
 
             Block masterBlock = new Block(parsedData);
             answerPartOne = masterBlock.GetAllMetadataCount();
