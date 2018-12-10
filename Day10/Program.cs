@@ -5,32 +5,27 @@ using System.IO;
 
 namespace Day10
 {
-    struct Position
-    {
-        public Int64 x;
-        public Int64 y;
-    }
-
-    struct Velocity
+    struct Vector2
     {
         public Int32 x;
         public Int32 y;
     }
+
     class SkyPoint
     {
         public SkyPoint(string dataLine) {
             var posStr = dataLine.Split(">")[0].Split("=<")[1].Split(", ");
-            position.x = Int64.Parse(posStr[0]);
-            position.y = Int64.Parse(posStr[1]);
+            position.x = Int32.Parse(posStr[0]);
+            position.y = Int32.Parse(posStr[1]);
 
             var velStr = dataLine.Split("=<")[2].Split(">")[0].Split(", ");
             velocity.x = Int32.Parse(velStr[0]);
             velocity.y = Int32.Parse(velStr[1]);
         }
 
-        public Position GetPointAtTime(Int32 time)
+        public Vector2 GetPointAtTime(Int32 time)
         {
-            Position posInTime = position;
+            Vector2 posInTime = position;
 
             posInTime.x += (velocity.x * time);
             posInTime.y += (velocity.y * time);
@@ -38,8 +33,8 @@ namespace Day10
             return posInTime;
         }
 
-        private Position position;
-        private Velocity velocity;
+        private Vector2 position;
+        private Vector2 velocity;
 
     }
     class Program
@@ -62,7 +57,7 @@ namespace Day10
 
             var time = 1;
             while (true) {
-                Position[] pointsInTime = new Position[skyPoints.Length];
+                Vector2[] pointsInTime = new Vector2[skyPoints.Length];
                 
                 for (var x = 0; x < skyPoints.Length; x++) {
                     pointsInTime[x] = skyPoints[x].GetPointAtTime(time);
@@ -88,8 +83,8 @@ namespace Day10
                     }
                 }
 
-                if (Math.Abs(endingX) - Math.Abs(startingX) <= pointsInTime.Length &&
-                    Math.Abs(endingY) - Math.Abs(startingY) <= 9) {
+                if (Math.Abs(endingX - startingX) <= pointsInTime.Length &&
+                    Math.Abs(endingY - startingY) <= 9) {
 
                     StreamWriter file = new StreamWriter(@"D:\Projects\Aoc18\Day10\Output.txt", false);
                     for (var y = startingY; y <= endingY; y++) {
