@@ -25,6 +25,20 @@
                 "kind": "build",
                 "isDefault": true
             }
+        },
+        {
+            "label": "build - day10",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "build",
+                "${workspaceFolder}/Day10/Day10.csproj"
+            ],
+            "problemMatcher": "$msCompile",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
         }
     ]
 }
