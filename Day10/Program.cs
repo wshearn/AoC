@@ -107,7 +107,7 @@ namespace Day10
                                 file.Write(" ");    
                             }
                         }
-                        file.WriteLine("\n");
+                        file.WriteLine("");
                     }
                     file.Close();
                     break;
