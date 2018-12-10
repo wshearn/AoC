@@ -39,7 +39,12 @@ namespace Day10
     }
     class Program
     {
-        public static string DATAFILE = "input";
+        static string DATAFILE = "input";
+        static string OUTPUTFILE = @"D:\Projects\Aoc18\Day10\Output.txt";
+
+        // I got lucky on my input where my detection worked on first go
+        //static string DATAFILE = "input.sample";
+        //static string OUTPUTFILE = @"D:\Projects\Aoc18\Day10\Output.sample.txt";
 
         static void Main(string[] args)
         {
@@ -86,7 +91,7 @@ namespace Day10
                 if (Math.Abs(endingX - startingX) <= pointsInTime.Length &&
                     Math.Abs(endingY - startingY) <= 9) {
 
-                    StreamWriter file = new StreamWriter(@"D:\Projects\Aoc18\Day10\Output.txt", false);
+                    StreamWriter file = new StreamWriter(OUTPUTFILE, false);
                     for (var y = startingY; y <= endingY; y++) {
                         for (var x = startingX; x <= endingX; x++) {
                             bool wasSet = false;
@@ -113,7 +118,7 @@ namespace Day10
             stopWatch.Stop();
             TimeSpan ts = stopWatch.Elapsed;
 
-            Console.WriteLine("Part 1: " + "See D:\\Projects\\Aoc18\\Day10\\Output.txt");
+            Console.WriteLine("Part 1: See " + OUTPUTFILE);
             Console.WriteLine("Part 2: " + time);
             Console.WriteLine("RunTime: " + ts);
         }
