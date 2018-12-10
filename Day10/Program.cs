@@ -40,8 +40,6 @@ namespace Day10
     class Program
     {
         static string DATAFILE = "input";
-        static string OUTPUTFILE = @"D:\Projects\Aoc18\Day10\Output.txt";
-
         // I got lucky on my input where my detection worked on first go
         //static string DATAFILE = "input.sample";
         //static string OUTPUTFILE = @"D:\Projects\Aoc18\Day10\Output.sample.txt";
@@ -61,6 +59,7 @@ namespace Day10
             }
 
             var time = 1;
+            string part1Answer = "";
             while (true) {
                 Vector2[] pointsInTime = new Vector2[skyPoints.Length];
                 
@@ -91,25 +90,24 @@ namespace Day10
                 if (Math.Abs(endingX - startingX) <= pointsInTime.Length &&
                     Math.Abs(endingY - startingY) <= 9) {
 
-                    StreamWriter file = new StreamWriter(OUTPUTFILE, false);
                     for (var y = startingY; y <= endingY; y++) {
                         for (var x = startingX; x <= endingX; x++) {
                             bool wasSet = false;
                             foreach(var point in pointsInTime) {
                                 if (!wasSet) {
                                     if (point.x == x && point.y == y) {
-                                        file.Write("#");
+                                        part1Answer += "#";
                                         wasSet = true;
                                     }
                                 }
                             }
                             if (wasSet == false) {
-                                file.Write(" ");    
+                                part1Answer += " ";
                             }
                         }
-                        file.WriteLine("");
+                        part1Answer += "\n";
                     }
-                    file.Close();
+
                     break;
                 }
                 time++;
@@ -118,7 +116,7 @@ namespace Day10
             stopWatch.Stop();
             TimeSpan ts = stopWatch.Elapsed;
 
-            Console.WriteLine("Part 1: See " + OUTPUTFILE);
+            Console.Write("Part 1:\n" + part1Answer);
             Console.WriteLine("Part 2: " + time);
             Console.WriteLine("RunTime: " + ts);
         }
