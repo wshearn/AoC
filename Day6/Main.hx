@@ -13,15 +13,26 @@ class Main {
             "x": 0,
             "y": 0
         }
+        var topLeft = {
+            "x": 1000,
+            "y": 1000
+        }
         for (cord in 0...data.length) {
             var splitCord = data[cord].split(", ");
 
-            var newMap = {
+            parsedCords[cord] = {
                 "x": Std.parseInt(splitCord[0]),
                 "y": Std.parseInt(splitCord[1])
             }
-            parsedCords[cord] = newMap;
-            if (bottomRight.x < parsedCords[cord].y) {
+
+            if (topLeft.x > parsedCords[cord].x) {
+                topLeft.x = parsedCords[cord].x;
+            }
+            if (topLeft.y > parsedCords[cord].y) {
+                topLeft.y = parsedCords[cord].y;
+            }
+
+            if (bottomRight.x < parsedCords[cord].x) {
                 bottomRight.x = parsedCords[cord].x;
             }
             if (bottomRight.y < parsedCords[cord].y) {
@@ -29,16 +40,12 @@ class Main {
             }
         }
 
-        // Find the bottom right most cord
-        bottomRight.x += 100;
-        bottomRight.y += 100;
-
         var count:Array<Int> = [ for (x in 0...data.length) 0 ];
         var glob:Int = 0;
         var globDist:Int = 10000;
 
-        for (x in 0...bottomRight.x) {
-            for (y in 0...bottomRight.y) {
+        for (x in topLeft.x...bottomRight.x) {
+            for (y in topLeft.y...bottomRight.y) {
                 var closestDist:Int = 999999;
                 var closestWhich:Int = -1;
                 var pointDistGlob:Float = 0;
@@ -58,7 +65,7 @@ class Main {
 
                     pointDistGlob += dist;
                 }
-                if (x == 0 || x == bottomRight.x-1 || y == 0 || y == bottomRight.y-1) {
+                if (x == topLeft.x || x == bottomRight.x || y == topLeft.y || y == bottomRight.y) {
                     count[closestWhich] = -1;
                 }
 

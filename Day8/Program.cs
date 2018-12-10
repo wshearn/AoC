@@ -22,7 +22,6 @@ namespace Day8
                 metaSum += metadata[x];
             }
         }
-
         public Int32 GetAllMetadataCount()
         {
             Int32 sum = 0;
@@ -67,6 +66,7 @@ namespace Day8
             stopWatch.Start();
             string data = System.IO.File.ReadAllText(DATAFILE);
             string[] splitData = data.Split(' ');
+            
             Queue<Int32> parsedData = new Queue<Int32>();
             foreach (var x in splitData)
             {
@@ -75,7 +75,6 @@ namespace Day8
                 parsedData.Enqueue(parsedInt32);
             }
 
-            Int32 maxLength = parsedData.Count / 2 + 1;
             Int32 answerPartOne = 0;
             Int32 answerPartTwo = 0;
 
