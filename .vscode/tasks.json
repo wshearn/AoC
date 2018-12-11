@@ -21,10 +21,7 @@
                 "${workspaceFolder}/Day9/Day9.csproj"
             ],
             "problemMatcher": "$msCompile",
-            "group": {
-                "kind": "build",
-                "isDefault": true
-            }
+            "group": "build"
         },
         {
             "label": "build - day10",
@@ -33,6 +30,17 @@
             "args": [
                 "build",
                 "${workspaceFolder}/Day10/Day10.csproj"
+            ],
+            "problemMatcher": "$msCompile",
+            "group": "build"
+        },
+        {
+            "label": "build - day11",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "build",
+                "${workspaceFolder}/Day11/Day11.csproj"
             ],
             "problemMatcher": "$msCompile",
             "group": {
