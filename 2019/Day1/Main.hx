@@ -1,8 +1,15 @@
+import haxe.Timer;
+import sys.io.File;
+
 class Main {
     public static function main() {
+        var part1Answer = 0;
+        var part2Answer = 0;
+
         var totalFuel = 0;
 
-        var fileIn = sys.io.File.read("input", false);
+        var fileIn = File.read("input", false);
+        var stamp = Timer.stamp();
         try {
             while(true) {
                 var line = fileIn.readLine();
@@ -13,7 +20,7 @@ class Main {
             fileIn.close();
         }
 
-        trace(totalFuel);
+        part1Answer = totalFuel;
 
         // Part 2
         var totalFuelOfFuel = 0;
@@ -37,7 +44,11 @@ class Main {
         } catch (e:haxe.io.Eof) {
             fileIn.close();
         }
+        part2Answer = totalFuelOfFuel;
+        var stopStamp = Timer.stamp();
 
-        trace(totalFuelOfFuel);
+        trace("Part 1: " + part1Answer);
+        trace("Part 2: " + part2Answer);
+        trace("Time in seconds it took to run: " + (stopStamp-stamp));
     }
 }

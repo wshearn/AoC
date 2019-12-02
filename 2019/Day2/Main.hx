@@ -1,3 +1,6 @@
+import haxe.Timer;
+import sys.io.File;
+
 class Main {
     public static function process(data:Array<Int>):Int {
         var pos = 0;
@@ -32,13 +35,14 @@ class Main {
         var part2Wanted = 19690720;
 
         // Part 1
-        var raw_data = sys.io.File.getContent("input");
+        var raw_data = File.getContent("input");
         var string_data = raw_data.split(",");
         var data:Array<Int> = new Array<Int>();
         for (x in 0...string_data.length) {
             data.push(Std.parseInt(string_data[x]));
         }
         
+        var stamp = Timer.stamp();
 
         var p1Data = data.copy();
         p1Data[1] = 12;
@@ -118,9 +122,11 @@ class Main {
             if (part2Answer != -1) {
                 break;
             }
-            
         }
+        var stopStamp = Timer.stamp();
+
         trace("Part 1: " + part1Answer);
         trace("Part 2: " + part2Answer);
+        trace("Time in seconds it took to run: " + (stopStamp-stamp));
     }
 }
