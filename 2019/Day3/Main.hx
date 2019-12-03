@@ -15,35 +15,59 @@ class Point {
 	}
 }
 
-abstract AbstractPoint(Point) from Point to Point {
-	@:op(A > B) public function greaterThan(b:Point):Bool {
-		if (this.x == b.x) {
-			return (this.y > b.y);
-		}
-		if (this.y == b.y) {
-			return (this.x > b.x);
-		}
-
-		return (this.x + this.y) > (b.x + b.y);
-	}
-
-	@:op(A < B) public function lessThan(b:Point):Bool {
-		if (this.x == b.x) {
-			return (this.y < b.y);
-		}
-		if (this.y == b.y) {
-			return (this.x < b.x);
-		}
-
-		return (this.x + this.y) < (b.x + b.y);
-	}
-
-	@:op(A == B) public function equalToo(b:Point):Bool {
-		return (this.x == b.x && this.y == b.y);
-	}
-}
-
 class Main {
+	public static function looper(wire:Array<String>):Map<String, Int> {
+		var path:Map<String, Int> = new Map<String, Int>();
+		var position = new Point(0, 0);
+		var totalSteps = 0;
+
+		for (item in wire) {
+			var dir = item.substr(0, 1);
+			var steps = Std.parseInt(item.substr(1));
+
+			switch dir {
+				case "R":
+					for (x in 0...steps) {
+						var key = position.x + "x" + position.y;
+						if (!path.exists(key)) {
+							path[key] = totalSteps;
+						}
+						totalSteps = totalSteps + 1;
+						position.x = position.x + 1;
+					}
+				case "L":
+					for (x in 0...steps) {
+						var key = position.x + "x" + position.y;
+						if (!path.exists(key)) {
+							path[key] = totalSteps;
+						}
+						totalSteps = totalSteps + 1;
+						position.x = position.x - 1;
+					}
+				case "D":
+					for (x in 0...steps) {
+						var key = position.x + "x" + position.y;
+						if (!path.exists(key)) {
+							path[key] = totalSteps;
+						}
+						totalSteps = totalSteps + 1;
+						position.y = position.y - 1;
+					}
+				case "U":
+					for (x in 0...steps) {
+						var key = position.x + "x" + position.y;
+						if (!path.exists(key)) {
+							path[key] = totalSteps;
+						}
+						totalSteps = totalSteps + 1;
+						position.y = position.y + 1;
+					}
+			}
+		}
+
+		return path;
+	}
+
 	public static function main() {
 		var part1Answer = 999999;
 		var part2Answer = 999999;
@@ -54,103 +78,13 @@ class Main {
 
 		var stamp = Timer.stamp();
 
-		var pathsOne:Map<String, Int> = new Map<String, Int>();
-		var pathsTwo:Map<String, Int> = new Map<String, Int>();
+		var pathsOne:Map<String, Int> = Main.looper(wireOne);
+		var pathsTwo:Map<String, Int> = Main.looper(wireTwo);
 
-		var position = new Point(0, 0);
-		var totalSteps = 0;
-		for (item in wireOne) {
-			var dir = item.substr(0, 1);
-			var steps = Std.parseInt(item.substr(1));
-
-			switch dir {
-				case "R":
-					for (x in 0...steps) {
-                        var key = position.x + "x" + position.y;
-                        if (!pathsOne.exists(key)) {
-                            pathsOne[key] = totalSteps;
-                        }
-                        totalSteps = totalSteps + 1;
-						position.x = position.x + 1;
-					}
-				case "L":
-					for (x in 0...steps) {
-                        var key = position.x + "x" + position.y;
-                        if (!pathsOne.exists(key)) {
-                            pathsOne[key] = totalSteps;
-                        }
-                        totalSteps = totalSteps + 1;
-						position.x = position.x - 1;
-					}
-				case "D":
-					for (x in 0...steps) {
-                        var key = position.x + "x" + position.y;
-                        if (!pathsOne.exists(key)) {
-                            pathsOne[key] = totalSteps;
-                        }
-                        totalSteps = totalSteps + 1;
-						position.y = position.y - 1;
-					}
-				case "U":
-					for (x in 0...steps) {
-                        var key = position.x + "x" + position.y;
-                        if (!pathsOne.exists(key)) {
-                            pathsOne[key] = totalSteps;
-                        }
-                        totalSteps = totalSteps + 1;
-						position.y = position.y + 1;
-					}
-			}
-		}
-
-		var position = new Point(0, 0);
-		var totalSteps = 0;
-		for (item in wireTwo) {
-			var dir = item.substr(0, 1);
-			var steps = Std.parseInt(item.substr(1));
-
-			switch dir {
-				case "R":
-					for (x in 0...steps) {
-						var key = position.x + "x" + position.y;
-						if (!pathsTwo.exists(key)) {
-							pathsTwo[key] = totalSteps;
-						}
-                        totalSteps = totalSteps + 1;
-						position.x = position.x + 1;
-					}
-				case "L":
-					for (x in 0...steps) {
-						var key = position.x + "x" + position.y;
-						if (!pathsTwo.exists(key)) {
-							pathsTwo[key] = totalSteps;
-						}
-                        totalSteps = totalSteps + 1;
-						position.x = position.x - 1;
-					}
-				case "D":
-					for (x in 0...steps) {
-						var key = position.x + "x" + position.y;
-						if (!pathsTwo.exists(key)) {
-							pathsTwo[key] = totalSteps;
-						}
-                        totalSteps = totalSteps + 1;
-						position.y = position.y - 1;
-					}
-				case "U":
-					for (x in 0...steps) {
-						var key = position.x + "x" + position.y;
-						if (!pathsTwo.exists(key)) {
-							pathsTwo[key] = totalSteps;
-						}
-                        totalSteps = totalSteps + 1;
-						position.y = position.y + 1;
-					}
-			}
-		}
-		var crossedPaths:Array<Point> = new Array<Point>();
-
+		// Don't count overlap on 0x0
 		pathsTwo.remove("0x0");
+
+		var crossedPaths:Array<Point> = new Array<Point>();
 		for (path in pathsOne.keys()) {
 			if (pathsTwo.exists(path)) {
 				var sPath = path.split("x");
@@ -163,7 +97,6 @@ class Main {
 			}
 		}
 
-		var maxDist:Int = 9999;
 		for (cPath in crossedPaths) {
 			var distX = cPath.x;
 			var distY = cPath.y;
