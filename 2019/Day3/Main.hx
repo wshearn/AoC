@@ -9,10 +9,6 @@ class Point {
 		this.x = x;
 		this.y = y;
 	}
-
-	public function toString() {
-		return "Point(" + x + "," + y + ")";
-	}
 }
 
 class Main {
