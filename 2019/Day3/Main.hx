@@ -65,8 +65,8 @@ class Main {
 	}
 
 	public static function main() {
-		var part1Answer = 999999;
-		var part2Answer = 999999;
+		var part1Answer = 0x3FFFFFFF;
+		var part2Answer = 0x3FFFFFFF;
 
 		var raw_data = File.getContent("input").split("\n");
 		var wireOne = raw_data[0].split(",");
