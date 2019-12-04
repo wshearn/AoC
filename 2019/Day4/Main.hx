@@ -15,7 +15,7 @@ class Main {
 		for (x in input[0]...input[1]) {
 			var numInString = "" + x;
 
-			var myMap:Map<Int, Int> = new Map<Int, Int>();
+			var part2Array = [0,0,0,0,0,0,0,0,0,0];
 
 			var valid = false;
 			for (place in 0...numInString.length - 1) {
@@ -31,24 +31,17 @@ class Main {
 					break;
 				}
 
-				if (myMap.exists(currChar)) {
-					myMap[currChar] = myMap[currChar] + 1;
-				} else {
-					myMap[currChar] = 1;
-				}
+				part2Array[currChar-48] = part2Array[currChar-48]+1;
+
 			}
 
 			var lastChar = numInString.charCodeAt(numInString.length-1);
-			if (myMap.exists(lastChar)) {
-				myMap[lastChar] = myMap[lastChar] + 1;
-			} else {
-				myMap[lastChar] = 1;
-			}
+			part2Array[lastChar-48] = part2Array[lastChar-48]+1;
 
 			if (valid == true) {
 				part1Answer++;
 
-				for (x in myMap) {
+				for (x in part2Array) {
 					if (x == 2) {
 						part2Answer++;
 						break;
