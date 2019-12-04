@@ -13,8 +13,6 @@ class Main {
 		var stamp = Timer.stamp();
 
 		for (x in input[0]...input[1]) {
-			var numInString = "" + x;
-
 			var numArray = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 
 			var num1 = Math.floor((x % 1000000) / 100000);
