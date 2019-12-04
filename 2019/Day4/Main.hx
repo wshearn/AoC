@@ -1,7 +1,4 @@
-import sys.db.Mysql;
-import sys.thread.Thread;
 import haxe.Timer;
-import sys.io.File;
 
 class Main {
 	public static function main() {
