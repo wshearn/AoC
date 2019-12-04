@@ -15,38 +15,44 @@ class Main {
 		for (x in input[0]...input[1]) {
 			var numInString = "" + x;
 
-			var part2Array = [0,0,0,0,0,0,0,0,0,0];
+			var numArray = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 
-			var valid = false;
-			for (place in 0...numInString.length - 1) {
-				var currChar = numInString.charCodeAt(place);
-				var nextChar = numInString.charCodeAt(place + 1);
+			var num1 = Math.floor((x % 1000000) / 100000);
+			var num2 = Math.floor((x % 100000) / 10000);
+			var num3 = Math.floor((x % 10000) / 1000);
+			var num4 = Math.floor((x % 1000) / 100);
+			var num5 = Math.floor((x % 100) / 10);
+			var num6 = Math.floor((x % 10) / 1);
 
-				if (currChar == nextChar) {
-					valid = true;
-				}
-
-				if (nextChar < currChar) {
-					valid = false;
-					break;
-				}
-
-				part2Array[currChar-48] = part2Array[currChar-48]+1;
-
+			if (num1 > num2 || num2 > num3 || num3 > num4 || num4 > num5 || num5 > num6) {
+				continue;
 			}
 
-			var lastChar = numInString.charCodeAt(numInString.length-1);
-			part2Array[lastChar-48] = part2Array[lastChar-48]+1;
+			numArray[num1]++;
+			numArray[num2]++;
+			numArray[num3]++;
+			numArray[num4]++;
+			numArray[num5]++;
+			numArray[num6]++;
 
-			if (valid == true) {
-				part1Answer++;
-
-				for (x in part2Array) {
-					if (x == 2) {
-						part2Answer++;
-						break;
-					}
+			var validP1 = false;
+			var validP2 = false;
+			for (x in numArray) {
+				if (x >= 2) {
+					validP1 = true;
 				}
+
+				if (x == 2) {
+					validP2 = true;
+				}
+			}
+
+			if (validP1 == true) {
+				part1Answer++;
+			}
+
+			if (validP2 == true) {
+				part2Answer++;
 			}
 		}
 
