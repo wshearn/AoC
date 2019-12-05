@@ -52,8 +52,8 @@ class Main {
                     finalResult = data[pos1];
                     if (pos2 == 99) {
                         trace("Result " + data[pos1]);
-                    } else if (finalResult != 0) {
-                        trace("Trace Error on line " + pos);
+                    } else {
+                        Assertion.assert(finalResult == 0);
                     }
             }
 
