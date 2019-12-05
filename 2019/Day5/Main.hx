@@ -7,7 +7,10 @@ class Main {
         var pos = 0;
 
         while(true) {
+            var oldData = data.copy();
+            var jmpPos = 0;
             var instruction = data[pos];
+            trace("instruction: " + instruction);
 
             var opcode = Math.floor((instruction % 100));
             if (opcode == 99) {
@@ -36,30 +39,37 @@ class Main {
             var result = 0;
 
             switch opcode{
-                case 1:
+                case 1: //Addation
                     result = num1+num2;
-                case 2:
+                    jmpPos = 4;
+                case 2: //Multiplication 
                     result = num1*num2;
-                case 3:
+                    jmpPos = 4;
+                case 3: //Input
                     var input = 1;
                     result = input;
-                case 4:
+                    jmpPos = 2;
+                case 4: //Output
                     finalResult = num1;
+                    trace("result: " + finalResult);
                     if (data[pos+2] != 99) {
                         Assertion.assert(finalResult == 0);
                     }
+                    jmpPos = 2;
             }
 
-            if (num3Ins == 0 || opcode == 3) {
-                data[data[pos+3]] = result;
-            } else if (num3Ins == 1) {
-                data[pos+3] = result;
+            data[data[pos+3]] = result;
+
+            if (opcode < 4) {
+                Assertion.assert(oldData != data);
             }
 
-            if (opcode >= 3) {
-                pos += 2;
-            } else {
-                pos += 4;
+            pos += jmpPos;
+        }
+
+        for (i in data) {
+            if (i == 16348437) { // Cheated to get this value
+                trace("Value is present..");
             }
         }
 
@@ -83,7 +93,6 @@ class Main {
 
         var p1Data = data.copy();
         part1Answer = Main.process(p1Data);
-
         var stopStamp = Timer.stamp();
 
         trace("Part 1: " + part1Answer);
