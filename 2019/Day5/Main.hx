@@ -36,18 +36,16 @@ class Main {
                 num2 = data[pos+2];
             }
 
-            var result = 0;
-
             switch opcode{
                 case 1: //Addation
-                    result = num1+num2;
+                    data[data[pos+3]] = num1+num2;
                     jmpPos = 4;
                 case 2: //Multiplication 
-                    result = num1*num2;
+                    data[data[pos+3]] = num1*num2;
                     jmpPos = 4;
                 case 3: //Input
                     var input = 1;
-                    result = input;
+                    data[data[pos+3]] = input;
                     jmpPos = 2;
                 case 4: //Output
                     finalResult = num1;
@@ -57,8 +55,6 @@ class Main {
                     }
                     jmpPos = 2;
             }
-
-            data[data[pos+3]] = result;
 
             if (opcode < 4) {
                 Assertion.assert(oldData != data);
