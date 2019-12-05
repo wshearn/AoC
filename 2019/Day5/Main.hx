@@ -6,13 +6,16 @@ class Main {
         var finalResult = 0;
         var pos = 0;
 
-        trace("\n\n\nStarting new set...");
         while(true) {
             var jmpPos = 0;
+            Assertion.assert(data[pos] != null);
             var instruction = data[pos];
-            trace("instruction: " + instruction);
 
             var opcode = Math.floor((instruction % 100));
+
+            if (opcode == 99) {
+                break;
+            }
 
             var num1Ins = Math.floor((instruction % 1000)/100);
             var num2Ins = Math.floor((instruction % 10000)/1000);
@@ -90,7 +93,6 @@ class Main {
     public static function main() {
         var part1Answer = 0;
         var part2Answer = -1;
-        var part2Wanted = 19690720;
 
         // Part 1
         var raw_data = File.getContent("input");
@@ -103,8 +105,9 @@ class Main {
         var stamp = Timer.stamp();
 
         var p1Data = data.copy();
+        var p2Data = data.copy();
         part1Answer = Main.process(p1Data, 1);
-        part2Answer = Main.process(p1Data, 5);
+        part2Answer = Main.process(p2Data, 5);
         var stopStamp = Timer.stamp();
 
         trace("Part 1: " + part1Answer);
