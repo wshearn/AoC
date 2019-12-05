@@ -13,9 +13,6 @@ class Main {
             trace("instruction: " + instruction);
 
             var opcode = Math.floor((instruction % 100));
-            if (opcode == 99) {
-                break;
-            }
 
             var num1Ins = Math.floor((instruction % 1000)/100);
             var num2Ins = Math.floor((instruction % 10000)/1000);
@@ -80,6 +77,8 @@ class Main {
                         data[data[pos+3]] = 0;
                      }
                     jmpPos = 4;
+                case 99:
+                    break;
             }
 
             pos += jmpPos;
