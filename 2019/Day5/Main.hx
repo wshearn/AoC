@@ -8,7 +8,6 @@ class Main {
 
         while(true) {
             var jmpPos = 0;
-            Assertion.assert(data[pos] != null);
             var instruction = data[pos];
 
             var opcode = Math.floor((instruction % 100));
@@ -41,30 +40,30 @@ class Main {
             switch opcode{
                 case 1: //Addation
                     data[data[pos+3]] = num1+num2;
-                    jmpPos = 4;
+                    jmpPos = pos+4;
                 case 2: //Multiplication 
                     data[data[pos+3]] = num1*num2;
-                    jmpPos = 4;
+                    jmpPos = pos+4;
                 case 3: //Input
-                    data[data[pos+3]] = input;
-                    jmpPos = 2;
+                    data[data[pos+1]] = input;
+                    jmpPos = pos+2;
                 case 4: //Output
                     finalResult = num1;
                     if (data[pos+2] != 99) {
                         Assertion.assert(finalResult == 0);
                     }
-                    jmpPos = 2;
+                    jmpPos = pos+2;
                 case 5: //Jump if true
                     if (num1 != 0) {
                         jmpPos = num2;
                     } else {
-                        jmpPos = 3;
+                        jmpPos = pos+3;
                     }
                 case 6: //Jump if false
                     if (num1 == 0) {
                         jmpPos = num2;
                     } else {
-                        jmpPos = 3;
+                        jmpPos = pos+3;
                     }
                 case 7: // Less than
                     if (num1 < num2) {
@@ -72,19 +71,19 @@ class Main {
                      } else {
                         data[data[pos+3]] = 0;
                      }
-                    jmpPos = 4;
+                    jmpPos = pos+4;
                 case 8: // Equals than
                     if (num1 == num2) {
                         data[data[pos+3]] = 1;
                      } else {
                         data[data[pos+3]] = 0;
                      }
-                    jmpPos = 4;
+                    jmpPos = pos+4;
                 case 99:
                     break;
             }
 
-            pos += jmpPos;
+            pos = jmpPos;
         }
 
         return finalResult;
