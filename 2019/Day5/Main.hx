@@ -5,35 +5,30 @@ class Main {
     public static function process(data:Array<Int>):Int {
         var finalResult = 0;
         var pos = 0;
+
         while(true) {
             var instruction = data[pos];
-            trace(instruction);
+
             var opcode = Math.floor((instruction % 100));
-            var num1Ins = Math.floor((instruction % 1000)/100);
-            var num2Ins = Math.floor((instruction % 10000)/1000);
-            var num3Ins = Math.floor((instruction % 100000)/10000);
-            
             if (opcode == 99) {
                 break;
             }
-            
-            var pos1 = data[pos+1];
-            var pos2 = data[pos+2];
-            var pos3 = data[pos+3];
+
+            var num1Ins = Math.floor((instruction % 1000)/100);
+            var num2Ins = Math.floor((instruction % 10000)/1000);
+            var num3Ins = Math.floor((instruction % 100000)/10000);
 
             var num1:Int = 0;
             var num2:Int = 0;
 
-            
-
             if (num1Ins == 0) {
-                num1 = data[pos1];
+                num1 = data[data[pos+1]];
             } else if (num1Ins == 1) {
                 num1 = data[pos+1];
             }
 
             if (num2Ins == 0) {
-                num2 = data[pos2];
+                num2 = data[data[pos+2]];
             } else if (num2Ins == 1) {
                 num2 = data[pos+2];
             }
@@ -49,16 +44,14 @@ class Main {
                     var input = 1;
                     result = input;
                 case 4:
-                    finalResult = data[pos1];
-                    if (pos2 == 99) {
-                        trace("Result " + data[pos1]);
-                    } else {
+                    finalResult = num1;
+                    if (data[pos+2] != 99) {
                         Assertion.assert(finalResult == 0);
                     }
             }
 
-            if (num3Ins == 0) {
-                data[pos3] = result;
+            if (num3Ins == 0 || opcode == 3) {
+                data[data[pos+3]] = result;
             } else if (num3Ins == 1) {
                 data[pos+3] = result;
             }
