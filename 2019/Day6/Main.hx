@@ -93,14 +93,14 @@ class StarMap {
 			if (placeAToCom[x] == placeBToCom[x]) {
 				endSame = x;
 			} else {
-                endSame += 1;
+				endSame += 1;
 				break;
 			}
 		}
 
-        result += placeAToCom.length - endSame - 1;
-        result += placeBToCom.length - endSame - 1;
-        return result;
+		result += placeAToCom.length - endSame - 1;
+		result += placeBToCom.length - endSame - 1;
+		return result;
 	}
 }
 
@@ -121,7 +121,7 @@ class Main {
 		}
 
 		part1Answer = starMap.countOrbits("COM");
-        part2Answer = starMap.findDistFrom("YOU", "SAN");
+		part2Answer = starMap.findDistFrom("YOU", "SAN");
 
 		var stopStamp = Timer.stamp();
 
