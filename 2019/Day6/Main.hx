@@ -7,22 +7,6 @@ class GalaticObject {
 	public var name:String;
 
 	public function new() {}
-
-	public function toString():String {
-		if (parent != null) {
-			return parent + " - " + name;
-		}
-		return name;
-	}
-
-	public function toArray():Array<String> {
-		if (parent != null) {
-			var res = parent.toArray();
-			res.push(name);
-			return res;
-		}
-		return [name];
-	}
 }
 
 class StarMap {
