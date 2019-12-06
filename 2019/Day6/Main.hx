@@ -34,22 +34,22 @@ class StarMap {
 	function findOrbit(name:Array<String>, start:String = "COM"):Array<String> {
 		var result = new Array<String>();
 
-        if (start == name[0]) {
-            result.push(start);
-            return result;
-        }
+		if (start == name[0]) {
+			result.push(start);
+			return result;
+		}
 
-        if (!orbits.exists(start)) {
-            return null;
-        }
+		if (!orbits.exists(start)) {
+			return null;
+		}
 
-        for (orbit in orbits[start]) {
-            var found = findOrbit(name, orbit);
-            if (found != null) {
-                found.push(start);
-                return found;
-            }
-        }
+		for (orbit in orbits[start]) {
+			var found = findOrbit(name, orbit);
+			if (found != null) {
+				found.push(start);
+				return found;
+			}
+		}
 
 		return null;
 	}
@@ -60,10 +60,10 @@ class StarMap {
 		var placeAToCom = findOrbit([placeA]);
 		var placeBToCom = findOrbit([placeB]);
 
-        while(placeAToCom[placeAToCom.length-1] == placeBToCom[placeBToCom.length-1]) {
-            placeAToCom.pop();
-            placeBToCom.pop();
-        }
+		while (placeAToCom[placeAToCom.length - 1] == placeBToCom[placeBToCom.length - 1]) {
+			placeAToCom.pop();
+			placeBToCom.pop();
+		}
 
 		result += placeAToCom.length - 1;
 		result += placeBToCom.length - 1;
