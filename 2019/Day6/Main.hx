@@ -54,45 +54,19 @@ class StarMap {
 		return null;
 	}
 
-	public function getFromCom(name:String):Array<String> {
-		var result:Array<String> = new Array<String>();
-
-		// YOU should go YOU->K->J->E->D->C->B->COM
-		var currentSearch = [name];
-        result = findOrbit(currentSearch);
-
-		if (result.length != 0) {
-			result.reverse(); // Flip it so index 0 is COM
-		}
-
-		return result;
-	}
-
 	public function findDistFrom(placeA:String, placeB:String):Int {
 		var result = 0;
 
-		var placeAToCom = getFromCom(placeA);
-		var placeBToCom = getFromCom(placeB);
+		var placeAToCom = findOrbit([placeA]);
+		var placeBToCom = findOrbit([placeB]);
 
-		var len = 0;
-		if (placeAToCom.length < placeBToCom.length) {
-			len = placeAToCom.length;
-		} else {
-			len = placeBToCom.length;
-		}
+        while(placeAToCom[placeAToCom.length-1] == placeBToCom[placeBToCom.length-1]) {
+            placeAToCom.pop();
+            placeBToCom.pop();
+        }
 
-		var endSame = 0;
-		for (x in 0...len) {
-			if (placeAToCom[x] == placeBToCom[x]) {
-				endSame = x;
-			} else {
-				endSame += 1;
-				break;
-			}
-		}
-
-		result += placeAToCom.length - endSame - 1;
-		result += placeBToCom.length - endSame - 1;
+		result += placeAToCom.length - 1;
+		result += placeBToCom.length - 1;
 		return result;
 	}
 }
