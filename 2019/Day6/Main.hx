@@ -31,23 +31,25 @@ class StarMap {
 		return result;
 	}
 
-	function findOrbit(name:String, start:String = "COM"):String {
-		if (!orbits.exists(start)) {
-			return null;
-		}
+	function findOrbit(name:Array<String>, start:String = "COM"):Array<String> {
+		var result = new Array<String>();
 
-		for (orbit in orbits[start]) {
-			if (orbit == name) {
-				return start;
-			}
-		}
+        if (start == name[0]) {
+            result.push(start);
+            return result;
+        }
 
-		for (orbit in orbits[start]) {
-			var res = findOrbit(name, orbit);
-			if (res != null) {
-				return res;
-			}
-		}
+        if (!orbits.exists(start)) {
+            return null;
+        }
+
+        for (orbit in orbits[start]) {
+            var found = findOrbit(name, orbit);
+            if (found != null) {
+                found.push(start);
+                return found;
+            }
+        }
 
 		return null;
 	}
@@ -56,21 +58,12 @@ class StarMap {
 		var result:Array<String> = new Array<String>();
 
 		// YOU should go YOU->K->J->E->D->C->B->COM
-		var currentSearch = name;
-		while (true) {
-			var found = findOrbit(currentSearch);
-			result.push(found);
-			if (found == "COM") {
-				break;
-			}
-
-			currentSearch = found;
-		}
+		var currentSearch = [name];
+        result = findOrbit(currentSearch);
 
 		if (result.length != 0) {
 			result.reverse(); // Flip it so index 0 is COM
 		}
-		result.push(name);
 
 		return result;
 	}
