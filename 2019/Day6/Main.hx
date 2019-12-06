@@ -1,64 +1,95 @@
 import haxe.Timer;
 import sys.io.File;
 
+class GalaticObject {
+	public var parent:GalaticObject;
+	public var children:Array<GalaticObject>;
+	public var name:String;
+
+	public function new() {}
+
+	public function toString():String {
+		if (parent != null) {
+			return parent + " - " + name;
+		}
+		return name;
+	}
+
+	public function toArray():Array<String> {
+		if (parent != null) {
+			var res = parent.toArray();
+			res.push(name);
+			return res;
+		}
+		return [name];
+	}
+}
+
 class StarMap {
-	var orbits:Map<String, Array<String>>;
+	var orbits:Map<String, GalaticObject>;
 
 	public function addOrbit(left:String, right:String) {
 		if (!orbits.exists(left)) {
-			orbits[left] = [right];
-		} else {
-			orbits[left].push(right);
+			var newParent:GalaticObject = new GalaticObject();
+			newParent.parent = null;
+			newParent.children = new Array<GalaticObject>();
+			newParent.name = left;
+
+			orbits[left] = newParent;
 		}
+
+		var child:GalaticObject;
+		if (!orbits.exists(right)) {
+			child = new GalaticObject();
+			child.children = new Array<GalaticObject>();
+		} else {
+			child = orbits[right];
+		}
+		child.parent = orbits[left];
+		child.name = right;
+		orbits[left].children.push(child);
+		orbits[right] = child;
 	}
 
 	public function new() {
-		orbits = new Map<String, Array<String>>();
+		orbits = new Map<String, GalaticObject>();
 	}
 
-	public function countOrbits(name:String, chainLength:Int = 0):Int {
-		if (!orbits.exists(name)) {
-			return chainLength;
+	public function countOrbits(?gObject:GalaticObject, chainLength:Int = 0):Int {
+		if (gObject == null) {
+			gObject = orbits["COM"];
 		}
 
 		var result = chainLength;
 
-		chainLength += 1;
-		for (orbit in orbits[name]) {
-			result += countOrbits(orbit, chainLength);
+		if (gObject.children.length == 0) {
+			return chainLength;
+		} else {
+			chainLength += 1;
+			for (child in gObject.children) {
+				result += countOrbits(child, chainLength);
+			}
 		}
 
 		return result;
 	}
 
-	function findOrbit(name:Array<String>, start:String = "COM"):Array<String> {
-		var result = new Array<String>();
-
-		if (start == name[0]) {
-			result.push(start);
-			return result;
-		}
-
-		if (!orbits.exists(start)) {
-			return null;
-		}
-
-		for (orbit in orbits[start]) {
-			var found = findOrbit(name, orbit);
-			if (found != null) {
-				found.push(start);
-				return found;
-			}
-		}
-
-		return null;
-	}
-
 	public function findDistFrom(placeA:String, placeB:String):Int {
 		var result = 0;
 
-		var placeAToCom = findOrbit([placeA]);
-		var placeBToCom = findOrbit([placeB]);
+		var marker = orbits[placeA];
+		var placeAToCom = new Array<String>();
+		while (marker.parent != null) {
+			placeAToCom.push(marker.name);
+			marker = marker.parent;
+		}
+
+		var placeBToCom = new Array<String>();
+		marker = orbits[placeB];
+		while (marker.parent != null) {
+			placeBToCom.push(marker.name);
+			marker = marker.parent;
+		}
 
 		while (placeAToCom[placeAToCom.length - 1] == placeBToCom[placeBToCom.length - 1]) {
 			placeAToCom.pop();
@@ -87,7 +118,7 @@ class Main {
 			starMap.addOrbit(orbit[0], StringTools.rtrim(orbit[1]));
 		}
 
-		part1Answer = starMap.countOrbits("COM");
+		part1Answer = starMap.countOrbits();
 		part2Answer = starMap.findDistFrom("YOU", "SAN");
 
 		var stopStamp = Timer.stamp();
