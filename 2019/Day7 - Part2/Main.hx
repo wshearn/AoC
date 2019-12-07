@@ -111,59 +111,36 @@ class Main {
 		var uniquePhase:Map<Int, Int> = new Map<Int, Int>();
 
 		var maxRes:Int = 0;
-
+		var threads:Array<Thread> = new Array<Thread>();
 		while (running) {
-			var amp1Data = data.copy();
-			var amp2Data = data.copy();
-			var amp3Data = data.copy();
-			var amp4Data = data.copy();
-			var amp5Data = data.copy();
+			threads = new Array<Thread>();
+			for (x in 0...inputs.length) {
+				var tData = data.copy();
+				threads.push(Thread.create(Main.process));
+				threads[threads.length-1].sendMessage(tData);
+			}
 
-			var amp1T = Thread.create(Main.process);
-			var amp2T = Thread.create(Main.process);
-			var amp3T = Thread.create(Main.process);
-			var amp4T = Thread.create(Main.process);
-			var amp5T = Thread.create(Main.process);
+			for (x in 0...threads.length) {
+				var nextThread:Thread;
+				var finalThread:Bool = (x == 4);
+				if (x < 4) {
+					nextThread = threads[x+1];
+				} else {
+					nextThread = threads[0];
+				}
+				threads[x].sendMessage(nextThread);
+				threads[x].sendMessage(Thread.current());
+				threads[x].sendMessage(finalThread);
+				threads[x].sendMessage(inputs[x]);
+			}
 
-			amp1T.sendMessage(amp1Data);
-			amp2T.sendMessage(amp2Data);
-			amp3T.sendMessage(amp3Data);
-			amp4T.sendMessage(amp4Data);
-			amp5T.sendMessage(amp5Data);
-
-			amp1T.sendMessage(amp2T);
-			amp2T.sendMessage(amp3T);
-			amp3T.sendMessage(amp4T);
-			amp4T.sendMessage(amp5T);
-			amp5T.sendMessage(amp1T);
-
-			amp1T.sendMessage(Thread.current());
-			amp2T.sendMessage(Thread.current());
-			amp3T.sendMessage(Thread.current());
-			amp4T.sendMessage(Thread.current());
-			amp5T.sendMessage(Thread.current());
-
-			amp1T.sendMessage(false);
-			amp2T.sendMessage(false);
-			amp3T.sendMessage(false);
-			amp4T.sendMessage(false);
-			amp5T.sendMessage(true);
-
-			amp1T.sendMessage(inputs[0]);
-			amp2T.sendMessage(inputs[1]);
-			amp3T.sendMessage(inputs[2]);
-			amp4T.sendMessage(inputs[3]);
-			amp5T.sendMessage(inputs[4]);
-
-			amp1T.sendMessage(0);
+			threads[0].sendMessage(0);
 
 			var res:Int = Thread.readMessage(true);
 
-			amp1T.sendMessage(-99999);
-			amp2T.sendMessage(-99999);
-			amp3T.sendMessage(-99999);
-			amp4T.sendMessage(-99999);
-			amp5T.sendMessage(-99999);
+			for (pThread in threads) {
+				pThread.sendMessage(-99999);
+			}
 
 			if (res > maxRes) {
 				maxRes = res;
