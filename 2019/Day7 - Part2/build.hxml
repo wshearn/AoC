@@ -1,0 +1,8 @@
+-D analyzer-optimize
+-lib assertion
+-main Main
+--cpp _out
+
+--next
+
+--cmd _out\\Main.exe
