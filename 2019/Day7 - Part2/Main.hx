@@ -1,3 +1,4 @@
+import sys.FileSystem;
 import haxe.Timer;
 import sys.thread.Thread;
 import sys.io.File;
@@ -97,7 +98,13 @@ class Main {
 	public static function main() {
 		var answer = 0;
 
-		var raw_data = File.getContent("input");
+		var inputFile:String = "input";
+
+		if (Sys.args().length > 0 && FileSystem.exists(Sys.args()[0])) {
+			inputFile = Sys.args()[0];
+		}
+
+		var raw_data = File.getContent(inputFile);
 		var stamp = Timer.stamp();
 
 		var string_data = raw_data.split(",");
@@ -117,14 +124,14 @@ class Main {
 			for (x in 0...inputs.length) {
 				var tData = data.copy();
 				threads.push(Thread.create(Main.process));
-				threads[threads.length-1].sendMessage(tData);
+				threads[threads.length - 1].sendMessage(tData);
 			}
 
 			for (x in 0...threads.length) {
 				var nextThread:Thread;
 				var finalThread:Bool = (x == 4);
 				if (x < 4) {
-					nextThread = threads[x+1];
+					nextThread = threads[x + 1];
 				} else {
 					nextThread = threads[0];
 				}
