@@ -21,9 +21,11 @@ class Main {
 		for (x in 0...numOfLayers) {
 			var layerBits = [0, 0, 0];
 
-			part2Answer = "";
 			for (h in 0...height) {
-				part2Answer += "\n";
+				if (x == numOfLayers - 1) {
+					part2Answer += "\n";
+				}
+
 				for (w in 0...width) {
 					var imageData = raw_data.charCodeAt(pos) - 48;
 					layerBits[imageData]++;
