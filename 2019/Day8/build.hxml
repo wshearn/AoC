@@ -1,4 +1,4 @@
 -D analyzer-optimize
--lib lime
 -main Main
+-lib assertion
 --interp
