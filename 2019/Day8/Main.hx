@@ -16,7 +16,7 @@ class Main {
 		var leastZero:Int = (width * height + 1);
 
 		var numOfLayers:Int = Math.floor(raw_data.length / (width * height));
-		var finalImage:Array<Array<Int>> = [ for (x in 0...height) [ for (y in 0...width) 2 ]];
+		var finalImage:Array<Array<Int>> = [for (x in 0...height) [for (y in 0...width) 2]];
 
 		for (x in 0...numOfLayers) {
 			var layerBits = [0, 0, 0];
