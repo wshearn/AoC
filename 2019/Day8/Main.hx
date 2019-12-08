@@ -37,7 +37,9 @@ class Main {
 		}
 		var pos = 0;
 		var leastZero = [0, (width*height+1)];
-		var image:Image = new Image(null, 0, 0, width, height, 0x000000, DATA);
+		var image:Image = new Image(null, 0, 0, width, height, 0xEEEEEE, DATA);
+		image.fillRect(new lime.math.Rectangle(0, 0, width, height), 0xEEEEEE);
+
 		for (layer in 0...numOfLayers) {
 			layers[layer] = new Map<Int, Int>();
 			var layerZero = 0;
@@ -51,10 +53,10 @@ class Main {
 					if (finalImage[w][h] == 2 && imageData != 2) {
 						finalImage[w][h] = imageData;
 
-						if (imageData == 1) {
-							image.setPixel(w, h, 0x000000);
+						if (imageData == 0) {
+							image.setPixel(w, h, 0x111111);
 						} else {
-							image.setPixel(w, h, 0xFFFFFF);
+							image.setPixel(w, h, 0xEEEEEE);
 						}
 					}
 
