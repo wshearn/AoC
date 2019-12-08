@@ -1,0 +1,4 @@
+-D analyzer-optimize
+-lib lime
+-main Main
+--interp
