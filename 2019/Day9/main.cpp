@@ -22,6 +22,8 @@ class IntComputer
             long long instruction = 0L;
             int opcode = 0;
 
+            int offset = 0;
+
             while (true) {
                 instruction = data[pos];
                 opcode = (instruction % 100);
@@ -34,46 +36,23 @@ class IntComputer
                 mode[1] = (instruction % 10000) / 1000;
                 mode[2] = (instruction % 100000) / 10000;
 
-                switch (mode[0]) {
-                    case 1:
-                        num[0] = pos + 1;
-                        break;
 
-                    case 2:
-                        num[0] = data[pos + 1] + base;
-                        break;
+                for (int i = 0; i < 3; ++i) {
+                    offset = i + 1;
 
-                    default:
-                        num[0] = data[pos + 1];
-                        break;
-                }
+                    switch (mode[i]) {
+                        case 1:
+                            num[i] = pos + offset;
+                            break;
 
-                switch (mode[1]) {
-                    case 1:
-                        num[1] = pos + 2;
-                        break;
+                        case 2:
+                            num[i] = data[pos + offset] + base;
+                            break;
 
-                    case 2:
-                        num[1] = data[pos + 2] + base;
-                        break;
-
-                    default:
-                        num[1] = data[pos + 2];
-                        break;
-                }
-
-                switch (mode[2]) {
-                    case 1:
-                        num[2] = pos + 3;
-                        break;
-
-                    case 2:
-                        num[2] = data[pos + 3] + base;
-                        break;
-
-                    default:
-                        num[2] = data[pos + 3];
-                        break;
+                        default:
+                            num[i] = data[pos + offset];
+                            break;
+                    }
                 }
 
                 switch (opcode) {
