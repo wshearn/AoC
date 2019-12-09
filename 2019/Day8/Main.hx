@@ -27,7 +27,7 @@ class Main {
 				}
 
 				for (w in 0...width) {
-					var imageData = raw_data.charCodeAt(pos) - 48;
+					var imageData = raw_data.charCodeAt(pos) - '0'.code;
 					layerBits[imageData]++;
 
 					if (finalImage[h][w] == 2 && imageData != 2) {
