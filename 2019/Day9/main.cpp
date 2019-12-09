@@ -14,106 +14,109 @@ class IntComputer
         long long process(long long data[], long long input) {
             long long result = 0;
             int pos = 0;
-            int relativeBase = 0;
+            int base = 0;
+
+            int mode[] = {0, 0, 0};
+            long long num[] = {0L, 0L, 0L};
+
+            long long instruction = 0L;
+            int opcode = 0;
 
             while (true) {
-                auto instruction = data[pos];
-                int opcode = (instruction % 100);
+                instruction = data[pos];
+                opcode = (instruction % 100);
 
                 if (opcode == 99) { // Exit
                     break;
                 }
 
-                auto num1Ins = (instruction % 1000) / 100;
-                auto num2Ins = (instruction % 10000) / 1000;
-                auto num3Ins = (instruction % 100000) / 10000;
-                auto num1 = 0L;
-                auto num2 = 0L;
-                auto num3 = 0L;
+                mode[0] = (instruction % 1000) / 100;
+                mode[1] = (instruction % 10000) / 1000;
+                mode[2] = (instruction % 100000) / 10000;
 
-                switch (num1Ins) {
+                switch (mode[0]) {
                     case 1:
-                        num1 = pos + 1;
+                        num[0] = pos + 1;
                         break;
 
                     case 2:
-                        num1 = data[pos + 1] + relativeBase;
+                        num[0] = data[pos + 1] + base;
                         break;
 
                     default:
-                        num1 = data[pos + 1];
+                        num[0] = data[pos + 1];
                         break;
                 }
 
-                switch (num2Ins) {
+                switch (mode[1]) {
                     case 1:
-                        num2 = pos + 2;
+                        num[1] = pos + 2;
                         break;
 
                     case 2:
-                        num2 = data[pos + 2] + relativeBase;
+                        num[1] = data[pos + 2] + base;
                         break;
 
                     default:
-                        num2 = data[pos + 2];
+                        num[1] = data[pos + 2];
                         break;
                 }
 
-                switch (num3Ins) {
+                switch (mode[2]) {
                     case 1:
-                        num3 = pos + 3;
+                        num[2] = pos + 3;
                         break;
 
                     case 2:
-                        num3 = data[pos + 3] + relativeBase;
+                        num[2] = data[pos + 3] + base;
                         break;
 
                     default:
-                        num3 = data[pos + 3];
+                        num[2] = data[pos + 3];
                         break;
                 }
 
                 switch (opcode) {
                     case 1: // Addition
-                        data[num3] = data[num1] + data[num2];
+                        data[num[2]] = data[num[0]] + data[num[1]];
                         pos += 4;
                         break;
 
                     case 2: // Multiplication
-                        data[num3] = data[num1] * data[num2];
+                        data[num[2]] = data[num[0]] * data[num[1]];
                         pos += 4;
                         break;
 
                     case 3: // Input
-                        data[num1] = input;
+                        data[num[0]] = input;
                         pos += 2;
                         break;
 
                     case 4: // Output
-                        result = data[num1];
+                        result = data[num[0]];
                         pos += 2;
                         break;
 
                     case 5: // Jump if True
-                        data[num1] != 0 ? pos = data[num2] : pos += 3;
+                        data[num[0]] != 0 ? pos = data[num[1]] : pos += 3;
                         break;
 
                     case 6: // Jump if False
-                        data[num1] == 0 ? pos = data[num2] : pos += 3;
+                        data[num[0]] == 0 ? pos = data[num[1]] : pos += 3;
                         break;
 
                     case 7: // Less than
-                        data[num1] < data[num2] ? data[num3] = 1 : data[num3] = 0;
+                        data[num[0]] < data[num[1]] ? data[num[2]] = 1 : data[num[2]] = 0;
                         pos += 4;
                         break;
 
                     case 8: // Equals to
-                        data[num1] == data[num2] ? data[num3] = 1 : data[num3] = 0;
+                        data[num[0]] == data[num[1]] ? data[num[2]] = 1 : data[num[2]] = 0;
                         pos += 4;
                         break;
 
                     case 9: // Relative base
-                        relativeBase += data[num1];
+                        base += data[num[0]];
                         pos += 2;
                         break;
 
@@ -156,7 +159,7 @@ int main()
     auto part2Answer = intComputer->process(data, 2);
 
     auto end = chrono::system_clock::now();
-    chrono::duration<double> elapsed_seconds = end-start;
+    chrono::duration<double> elapsed_seconds = end - start;
 
     cout << "Part 1 Answer: " << part1Answer << endl;
     cout << "Part 2 Answer: " << part2Answer << endl;
