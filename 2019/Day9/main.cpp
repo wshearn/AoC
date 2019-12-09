@@ -126,7 +126,7 @@ int main()
     string raw_data((istreambuf_iterator<char>(input)),
                     istreambuf_iterator<char>());
 
-    auto start = std::chrono::system_clock::now();
+    auto start = chrono::system_clock::now();
 
     size_t n = count(raw_data.begin(), raw_data.end(), ',') + 1;
 
@@ -148,9 +148,8 @@ int main()
     long long part1Answer = intComputer->process(data, 1);
     long long part2Answer = intComputer->process(data, 2);
 
-    auto end = std::chrono::system_clock::now();
-    std::chrono::duration<double> elapsed_seconds = end-start;
-    std::time_t end_time = std::chrono::system_clock::to_time_t(end);
+    auto end = chrono::system_clock::now();
+    chrono::duration<double> elapsed_seconds = end-start;
 
     cout << "Part 1 Answer: " << part1Answer << endl;
     cout << "Part 2 Answer: " << part2Answer << endl;
