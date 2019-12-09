@@ -153,9 +153,7 @@ int main()
 
     data[n - 1] = stoll(raw_data);
     auto part1Answer = intComputer->process(data, 1);
-    assert(part1Answer == 3063082071);
     auto part2Answer = intComputer->process(data, 2);
-    assert(part2Answer == 81348);
 
     auto end = chrono::system_clock::now();
     chrono::duration<double> elapsed_seconds = end-start;
