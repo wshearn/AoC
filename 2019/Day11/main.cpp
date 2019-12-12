@@ -206,12 +206,7 @@ int main()
         data[n - 1] = stoll(raw_data);
     }
 
-    Point min;
-    min.x = 0;
-    min.y = 0;
-    Point max;
-    max.x = 0;
-    max.y = 0;
+    Point startPoint; startPoint.x = 0; startPoint.y = 0;
     {
         auto intComputer1 = new IntComputer(data);
         thread thread1 = intComputer1->get_proc_thread();
@@ -241,28 +236,15 @@ int main()
                         intComputer1->input.push(canvas[painterBot->position]);
                     }
 
-                    if (painterBot->position.x < min.x) {
-                        min.x = painterBot->position.x;
-                    }
-
-                    if (painterBot->position.x > max.x) {
-                        max.x = painterBot->position.x;
-                    }
-
-                    if (painterBot->position.y < min.y) {
-                        min.y = painterBot->position.y;
-                    }
-
-                    if (painterBot->position.y > max.y) {
-                        max.y = painterBot->position.y;
-                    }
-
-
                 } else {
                     if (canvas.find(painterBot->position) == canvas.end()) {
                         canvas.insert(pair<Point, int>(painterBot->position, code));
                     } else {
                         canvas[painterBot->position] = code;
+                    }
+
+                    if (painterBot->position < startPoint) {
+                        startPoint = painterBot->position;
                     }
                 }
 
@@ -278,11 +260,11 @@ int main()
     cout << "Part 1 Answer: " << canvas.size() << endl;
 
     if (STARTING_COLOR == 1) {
-        cout << "Printing part 2 answer.";
+        cout << "Printing part 2 answer." << endl;
 
         map<Point, int>::iterator it = canvas.begin();
 
-        int currentX = -1000;
+        int currentX = startPoint.x;
         int currentY = 0;
 
         for (pair<Point, int> element : canvas) {
