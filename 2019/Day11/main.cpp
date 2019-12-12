@@ -21,6 +21,7 @@ class IntComputer
         queue<long long> output;
 
         bool running = true;
+        bool waitingForInput = false;
 
         void process() {
             int pos = 0;
@@ -40,7 +41,10 @@ class IntComputer
                 opcode = (instruction % 100);
 
                 if (opcode == 99) { // Exit
-                    output.push(99);
+                    while (!output.empty()) {
+                        this_thread::sleep_for(std::chrono::milliseconds(1));
+                    }
+
                     running = false;
                     break;
                 }
@@ -76,10 +80,13 @@ class IntComputer
                     data[num[2]] = data[num[0]] * data[num[1]];
                     pos += 4;
                 } else if (opcode == 3) { // Input
+                    waitingForInput = true;
+
                     while (input.empty()) {
                         this_thread::sleep_for(std::chrono::milliseconds(1));
                     }
 
+                    waitingForInput = false;
                     data[num[0]] = input.front();
                     input.pop();
                     pos += 2;
@@ -206,36 +213,28 @@ int main()
         data[n - 1] = stoll(raw_data);
     }
 
-    Point startPoint; startPoint.x = 0; startPoint.y = 0;
+    Point startPoint;
+    startPoint.x = 0;
+    startPoint.y = 0;
     {
         auto intComputer1 = new IntComputer(data);
         thread thread1 = intComputer1->get_proc_thread();
 
         Robot *painterBot = new Robot(0, 0);
         canvas.insert(pair<Point, int>(painterBot->position, STARTING_COLOR));
-        intComputer1->input.push(canvas[painterBot->position]);
 
         bool moving = false;
 
         while (intComputer1->running) {
-            if (intComputer1->output.empty()) {
+            if (intComputer1->waitingForInput) {
+                intComputer1->input.push(canvas[painterBot->position]);
+            } else if (intComputer1->output.empty()) {
                 this_thread::sleep_for(std::chrono::milliseconds(1));
             } else {
                 int code = intComputer1->output.front();
 
-                if (code == 99) {
-                    break;
-                }
-
                 if (moving) {
                     painterBot->move(code);
-
-                    if (canvas.find(painterBot->position) == canvas.end()) {
-                        intComputer1->input.push(0);
-                    } else {
-                        intComputer1->input.push(canvas[painterBot->position]);
-                    }
-
                 } else {
                     if (canvas.find(painterBot->position) == canvas.end()) {
                         canvas.insert(pair<Point, int>(painterBot->position, code));
@@ -243,8 +242,12 @@ int main()
                         canvas[painterBot->position] = code;
                     }
 
-                    if (painterBot->position < startPoint) {
-                        startPoint = painterBot->position;
+                    if (painterBot->position.x < startPoint.x) {
+                        startPoint.x = painterBot->position.x;
+                    }
+
+                    if (painterBot->position.y < startPoint.y) {
+                        startPoint.y = painterBot->position.y;
                     }
                 }
 
@@ -262,30 +265,27 @@ int main()
     if (STARTING_COLOR == 1) {
         cout << "Printing part 2 answer." << endl;
 
-        map<Point, int>::iterator it = canvas.begin();
-
-        int currentX = startPoint.x;
-        int currentY = 0;
+        Point current = startPoint;
 
         for (pair<Point, int> element : canvas) {
-            if (element.first.x > currentX) {
-                currentX = element.first.x;
-                currentY = 0;
+            if (element.first.x > current.x) {
+                current.x = element.first.x;
+                current.y = startPoint.y;
                 cout << endl;
             }
 
-            while (currentY < element.first.y) {
-                currentY++;
+            while (current.y < element.first.y) {
+                current.y++;
                 cout << " ";
             }
+
+            current.y++;
 
             if (element.second == 0) {
                 cout << " ";
             } else {
                 cout << "#";
             }
-
-            currentY++;
         }
 
         cout << endl;
