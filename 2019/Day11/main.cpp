@@ -278,31 +278,35 @@ int main()
     cout << "Part 1 Answer: " << canvas.size() << endl;
 
     if (STARTING_COLOR == 1) {
-        cout << "Printing part 2 answer." << endl;
-        auto offsetX = abs(min.x);
-        auto offsetY = abs(min.y);
-        int finished_canvas[100][100] = {0};
+        cout << "Printing part 2 answer.";
 
         map<Point, int>::iterator it = canvas.begin();
 
+        int currentX = -1000;
+        int currentY = 0;
+
         for (pair<Point, int> element : canvas) {
-            auto x = offsetX + element.first.x;
-            auto y = offsetY + element.first.y;
-
-            finished_canvas[x][y] = element.second;
-        }
-
-        for (int x = 0; x < max.x + offsetX; x++) {
-            for (int y = 0; y < max.y + offsetY; y++) {
-                if (finished_canvas[x][y] == 1) {
-                    cout << "#";
-                } else {
-                    cout << " ";
-                }
+            if (element.first.x > currentX) {
+                currentX = element.first.x;
+                currentY = 0;
+                cout << endl;
             }
 
-            cout << endl;
+            while (currentY < element.first.y) {
+                currentY++;
+                cout << " ";
+            }
+
+            if (element.second == 0) {
+                cout << " ";
+            } else {
+                cout << "#";
+            }
+
+            currentY++;
         }
+
+        cout << endl;
     }
 
     auto end = chrono::system_clock::now();
