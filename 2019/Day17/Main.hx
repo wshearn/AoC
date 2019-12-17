@@ -5,8 +5,7 @@ import haxe.Timer;
 import sys.io.File;
 
 class Main {
-	public static function process():Int64 {
-		var finalResult:Int = 0;
+	public static function process() {
 		var pos = 0;
 
 		var mode:Array<Int> = [0, 0, 0];
@@ -58,8 +57,7 @@ class Main {
 					data[Int64.toInt(num[0])] = Thread.readMessage(true);
 					pos += 2;
 				case 4: // Output
-					finalResult = Int64.toInt(data[Int64.toInt(num[0])]);
-					mainThread.sendMessage(finalResult);
+					mainThread.sendMessage(Int64.toInt(data[Int64.toInt(num[0])]));
 					Thread.readMessage(true);
 					pos += 2;
 				case 5: // Jump if true
@@ -77,8 +75,6 @@ class Main {
 					pos += 2;
 			}
 		}
-
-		return finalResult;
 	}
 
 	public static function main() {
@@ -121,59 +117,47 @@ class Main {
 
 		image.pop(); // Had an empty array at the end
 
+		var validTop:Bool = false;
+		var validBottom:Bool = false;
+		var validLeft:Bool = false;
+		var validRight:Bool = false;
+
 		for (y in 0...image.length) {
 			for (x in 0...image[y].length) {
-				var validTop:Bool = false;
-				var validBottom:Bool = false;
-				var validLeft:Bool = false;
-				var validRight:Bool = false;
-
-				if (image[y][x] == 46) {
+				if (image[y][x] == ".".code) {
 					continue;
 				}
 
-				if (y == 0) {
-					if (image[image.length - 1][x] != 46) {
-						validTop = true;
-					}
-					if (image[y + 1][x] != 46) {
-						validBottom = true;
-					}
+				if (y == 0 && image[image.length - 1][x] != ".".code) {
+					validTop = true;
+				} else if (image[y - 1][x] != ".".code) {
+					validTop = true;
 				} else {
-					if (image[y - 1][x] != 46) {
-						validTop = true;
-					}
-
-					if (y == image.length - 1) {
-						if (image[0][x] != 46) {
-							validBottom = true;
-						}
-					} else if (image[y + 1][x] != 46) {
-						validBottom = true;
-					}
+					validTop = false;
 				}
 
-				if (x == 0) {
-					if (image[y][image[y].length - 1] != 46) {
-						validLeft = true;
-					}
-					if (image[y][x + 1] != 46) {
-						validRight = true;
-					}
+				if (y == image.length - 1 && image[0][x] != ".".code) {
+					validBottom = true;
+				} else if (image[y + 1][x] != ".".code) {
+					validBottom = true;
 				} else {
-					if (image[y][x - 1] != 46) {
-						validLeft = true;
-					}
+					validBottom = false;
+				}
 
-					if (x == image[y].length - 1) {
-						if (image[y][0] != 46) {
-							validRight = true;
-						}
-					} else {
-						if (image[y][x + 1] != 46) {
-							validRight = true;
-						}
-					}
+				if (x == 0 && image[y][image[y].length - 1] != ".".code) {
+					validLeft = true;
+				} else if (image[y][x - 1] != ".".code) {
+					validLeft = true;
+				} else {
+					validLeft = false;
+				}
+
+				if (x == image[y].length - 1 && image[y][0] != ".".code) {
+					validRight = true;
+				} else if (image[y][x + 1] != ".".code) {
+					validRight = true;
+				} else {
+					validRight = false;
 				}
 
 				if (validTop && validLeft && validBottom && validRight) {
@@ -182,17 +166,19 @@ class Main {
 			}
 		}
 
-		for (y in image) {
-			for (char in y) {
-				Sys.print(String.fromCharCode(char));
+		var output:String = "";
+		for (y in 0...image.length) {
+			for (char in image[y]) {
+				output += String.fromCharCode(char);
 			}
-			Sys.println("");
+			if (y != image.length - 1) {
+				output += "\n";
+			}
 		}
-
+		Sys.print(output);
 		var stopStamp = Timer.stamp();
-		Sys.println('');
-		trace("Part 1: " + part1Answer);
-		trace("Part 2: " + part2Answer);
-		trace("Time in seconds it took to run: " + (stopStamp - stamp));
+		Sys.println("Part 1 Answer: " + part1Answer);
+		Sys.println("Part 2 Answer: " + part2Answer);
+		Sys.println("Time in seconds it took to run: " + (stopStamp - stamp));
 	}
 }
