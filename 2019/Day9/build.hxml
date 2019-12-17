@@ -1,0 +1,4 @@
+-D analyzer-optimize
+-lib assertion
+-main Main
+--interp
