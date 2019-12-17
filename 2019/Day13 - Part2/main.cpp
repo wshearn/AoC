@@ -183,9 +183,8 @@ int main()
         char board[25][30] = { { '.' } };
 
         while (intComputer1->running) {
-            if (intComputer1->waitingForInput) {
+            if (intComputer1->waitingForInput && intComputer1->output.empty()) {
                 move++;
-                redraw(board);
 
                 if (move <= 2) {
                     intComputer1->input.push(1);
@@ -203,6 +202,7 @@ int main()
                     intComputer1->input.push(0);
                 }
             } else if (intComputer1->output.empty()) {
+                redraw(board);
                 this_thread::sleep_for(std::chrono::milliseconds(1));
             } else {
                 lastBlock[currentCount] = intComputer1->output.front();
