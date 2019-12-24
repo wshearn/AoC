@@ -3,46 +3,31 @@ import haxe.Timer;
 import sys.io.File;
 
 class Main {
-	private static function biodiversRating(data:Array<Array<Int>>):Int {
-		var result:Int = 0;
-
-		for (row in data) {
-			for (col in row) {
-				result += col;
-			}
-		}
-
-		return result;
-	}
 	public static function main() {
 		var part1Answer = 0;
 
-		var inputFile:String = "input";
-
-		var raw_data = File.getContent(inputFile).split("\n");
-
 		var stamp = Timer.stamp();
+		var raw_data = File.getContent("input").split("\n");
 
-		var data:Array<Array<Int>> =  [ for (x in 0...5) [ for (y in 0...5) 0 ]];
+		var data:Array<Array<Int>> = [ for (x in 0...5) [ for (y in 0...5) 0 ]];
 		var results:Map<Int, Bool> = new Map<Int, Bool>();
+		var biodivers = 0;
 
 		for (line in 0...5) {
 			for (char in 0...5) {
 				if (raw_data[line].charAt(char) == "#") {
 					data[line][char] = Math.floor(Math.pow(2, (line*5)+(char)));
 				} else {
-					data[line][char];
+					data[line][char] = 0;
 				}
+				biodivers += data[line][char];
 			}
 		}
-
-		results[biodiversRating(data)] = true;
-
-		var time = 0;
+		results[biodivers] = true;
 
 		while (true) {
-			time++;
-			var newData:Array<Array<Int>> =  [ for (x in 0...5) [ for (y in 0...5) 0 ]];
+			var newData:Array<Array<Int>> = [ for (x in 0...5) [ for (y in 0...5) 0 ]];
+			biodivers = 0;
 
 			for (row in 0...5) {
 				for (col in 0...5) {
@@ -76,10 +61,10 @@ class Main {
 					} else {
 						newData[row][col] = data[row][col];
 					}
+					biodivers += newData[row][col];
 				}
 			}
 
-			var biodivers = biodiversRating(newData);
 			if (results.exists(biodivers) && results[biodivers] == true) {
 				part1Answer = biodivers;
 				break;
