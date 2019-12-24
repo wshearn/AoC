@@ -1,4 +1,3 @@
-import sys.FileSystem;
 import haxe.Timer;
 import sys.io.File;
 
