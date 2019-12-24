@@ -9,55 +9,47 @@ class Main {
 		var stamp = Timer.stamp();
 		var raw_data = File.getContent("input").split("\n");
 
-		var data:Array<Array<Int>> = [ for (x in 0...5) [ for (y in 0...5) 0 ]];
+		var data:Array<Array<Int>> = [for (row in 0...5) [for (col in 0...5) 0]];
+
 		var results:Map<Int, Bool> = new Map<Int, Bool>();
 		var biodivers = 0;
 
-		for (line in 0...5) {
-			for (char in 0...5) {
-				if (raw_data[line].charAt(char) == "#") {
-					data[line][char] = Math.floor(Math.pow(2, (line*5)+(char)));
+		for (row in 0...5) {
+			for (col in 0...5) {
+				if (raw_data[row].charCodeAt(col) == "#".code) {
+					data[row][col] = 1 << ((row * 5) + col);
 				} else {
-					data[line][char] = 0;
+					data[row][col] = 0;
 				}
-				biodivers += data[line][char];
+				biodivers += data[row][col];
 			}
 		}
 		results[biodivers] = true;
 
 		while (true) {
-			var newData:Array<Array<Int>> = [ for (x in 0...5) [ for (y in 0...5) 0 ]];
+			var newData:Array<Array<Int>> = [for (x in 0...5) [for (y in 0...5) 0]];
 			biodivers = 0;
 
 			for (row in 0...5) {
 				for (col in 0...5) {
 					var totalBugs:Int = 0;
-					if (row > 0) {
-						if (data[row-1][col] > 0) {
-							totalBugs++;
-						}
+					if (row > 0 && data[row - 1][col] > 0) {
+						totalBugs++;
 					}
-					if (row < 4) {
-						if (data[row+1][col] > 0) {
-							totalBugs++;
-						}
+					if (row < 4 && data[row + 1][col] > 0) {
+						totalBugs++;
 					}
-					if (col > 0) {
-						if (data[row][col-1] != 0) {
-							totalBugs++;
-						}
+					if (col > 0 && data[row][col - 1] != 0) {
+						totalBugs++;
 					}
-
-					if (col < 4) {
-						if (data[row][col+1] != 0) {
-							totalBugs++;
-						}
+					if (col < 4 && data[row][col + 1] != 0) {
+						totalBugs++;
 					}
 
 					if (data[row][col] != 0 && totalBugs != 1) {
 						newData[row][col] = 0;
 					} else if (data[row][col] == 0 && (totalBugs == 1 || totalBugs == 2)) {
-						newData[row][col] = Math.floor(Math.pow(2, (row*5)+(col)));
+						newData[row][col] = 1 << ((row * 5) + col);
 					} else {
 						newData[row][col] = data[row][col];
 					}
@@ -65,13 +57,13 @@ class Main {
 				}
 			}
 
-			if (results.exists(biodivers) && results[biodivers] == true) {
+			if (results[biodivers] == true) {
 				part1Answer = biodivers;
 				break;
-			} else {
-				results[biodivers] = true;
-				data = newData;
 			}
+
+			results[biodivers] = true;
+			data = newData;
 		}
 
 		var stopStamp = Timer.stamp();
