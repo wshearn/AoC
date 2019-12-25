@@ -39,7 +39,7 @@ class Main {
 		var lowestKey:Int = 0;
 		var highestKey:Int = 0;
 		var whichData = 0;
-		for (time in 0...200) {
+		for (_ in 0...200) {
 			part2Answer = 0;
 
 			var nextData = (whichData + 1) % 2;
