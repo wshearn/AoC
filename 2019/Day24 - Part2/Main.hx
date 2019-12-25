@@ -11,57 +11,91 @@ class Main {
 		var data:Array<Map<Int, Array<Array<Int>>>> = new Array<Map<Int, Array<Array<Int>>>>();
 		data[0] = new Map<Int, Array<Array<Int>>>();
 		data[1] = new Map<Int, Array<Array<Int>>>();
-		data[0][0] = [for (row in 0...5) [for (col in 0...5) 0]];
-		data[1][0] = [for (row in 0...5) [for (col in 0...5) 0]];
+		data[0][0] = [
+			[0, 0, 0, 0, 0],
+			[0, 0, 0, 0, 0],
+			[0, 0, 0, 0, 0],
+			[0, 0, 0, 0, 0],
+			[0, 0, 0, 0, 0]
+		];
+		data[1][0] = [
+			[0, 0, 0, 0, 0],
+			[0, 0, 0, 0, 0],
+			[0, 0, 0, 0, 0],
+			[0, 0, 0, 0, 0],
+			[0, 0, 0, 0, 0]
+		];
 
 		for (row in 0...5) {
 			for (col in 0...5) {
 				if (raw_data[row].charCodeAt(col) == "#".code) {
 					data[0][0][row][col] = 1;
-					data[1][0][row][col] = 1;
 				} else {
 					data[0][0][row][col] = 0;
-					data[1][0][row][col] = 0;
 				}
 			}
 		}
 
+		var lowestKey:Int = 0;
+		var highestKey:Int = 0;
 		var whichData = 0;
 		for (time in 0...200) {
 			part2Answer = 0;
 
-			var nextData = whichData - 1;
-			if (nextData < 0) {
-				nextData = 1;
-			}
+			var nextData = (whichData + 1) % 2;
 
-			for (tile in data[whichData].keys()) {
-				if (!data[whichData].exists(tile - 1)) {
-					var colCount:Int = 0;
-					for (x in 0...5) {
-						colCount += data[whichData][tile][0][x];
-						colCount += data[whichData][tile][4][x];
-						colCount += data[whichData][tile][x][0];
-						colCount += data[whichData][tile][x][4];
-					}
-
-					if (colCount != 0) {
-						data[0][tile - 1] = [for (x in 0...5) [for (y in 0...5) 0]];
-						data[1][tile - 1] = [for (x in 0...5) [for (y in 0...5) 0]];
-					}
+			if (!data[whichData].exists(lowestKey - 1)) {
+				var colCount:Int = 0;
+				for (x in 0...5) {
+					colCount += data[whichData][lowestKey][0][x];
+					colCount += data[whichData][lowestKey][4][x];
+					colCount += data[whichData][lowestKey][x][0];
+					colCount += data[whichData][lowestKey][x][4];
 				}
 
-				if (!data[whichData].exists(tile + 1)) {
-					var innerCount:Int = 0;
-					innerCount += data[whichData][tile][2][1];
-					innerCount += data[whichData][tile][2][3];
-					innerCount += data[whichData][tile][1][2];
-					innerCount += data[whichData][tile][3][2];
+				if (colCount != 0) {
+					data[0][lowestKey - 1] = [
+						[0, 0, 0, 0, 0],
+						[0, 0, 0, 0, 0],
+						[0, 0, 0, 0, 0],
+						[0, 0, 0, 0, 0],
+						[0, 0, 0, 0, 0]
+					];
+					data[1][lowestKey - 1] = [
+						[0, 0, 0, 0, 0],
+						[0, 0, 0, 0, 0],
+						[0, 0, 0, 0, 0],
+						[0, 0, 0, 0, 0],
+						[0, 0, 0, 0, 0]
+					];
 
-					if (innerCount != 0) {
-						data[0][tile + 1] = [for (x in 0...5) [for (y in 0...5) 0]];
-						data[1][tile + 1] = [for (x in 0...5) [for (y in 0...5) 0]];
-					}
+					lowestKey = lowestKey - 1;
+				}
+			}
+
+			if (!data[whichData].exists(highestKey + 1)) {
+				var innerCount:Int = 0;
+				innerCount += data[whichData][highestKey][2][1];
+				innerCount += data[whichData][highestKey][2][3];
+				innerCount += data[whichData][highestKey][1][2];
+				innerCount += data[whichData][highestKey][3][2];
+
+				if (innerCount != 0) {
+					data[0][highestKey + 1] = [
+						[0, 0, 0, 0, 0],
+						[0, 0, 0, 0, 0],
+						[0, 0, 0, 0, 0],
+						[0, 0, 0, 0, 0],
+						[0, 0, 0, 0, 0]
+					];
+					data[1][highestKey + 1] = [
+						[0, 0, 0, 0, 0],
+						[0, 0, 0, 0, 0],
+						[0, 0, 0, 0, 0],
+						[0, 0, 0, 0, 0],
+						[0, 0, 0, 0, 0]
+					];
+					highestKey = highestKey + 1;
 				}
 			}
 
