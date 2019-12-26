@@ -45,6 +45,7 @@ class Main {
 		var numOfCards:Int = 10007;
 		var deck:Array<Int> = [for (i in 0...numOfCards) i];
 		for (rule in shuffle) {
+			rule = StringTools.trim(rule);
 			var num = rule.lastIndexOf(" ") + 1;
 			if (rule == "deal into new stack") {
 				deck = Main.technique_stack(deck);
