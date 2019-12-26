@@ -3,32 +3,10 @@ import sys.io.File;
 
 class Main {
 	public static function technique_cut(deck:Array<Int>, size:Int, ?rule:String):Array<Int> {
-		var pos:Int = 0;
-		var newDeck:Array<Int> = new Array<Int>();
-		newDeck[deck.length - 1] = -1;
-
 		if (size < 0) {
-			var start = deck.length + size;
-			for (x in start...deck.length) {
-				newDeck[pos] = deck[x];
-				pos++;
-			}
-			for (x in 0...start) {
-				newDeck[pos] = deck[x];
-				pos++;
-			}
-		} else {
-			for (x in size...deck.length) {
-				newDeck[pos] = deck[x];
-				pos++;
-			}
-			for (x in 0...size) {
-				newDeck[pos] = deck[x];
-				pos++;
-			}
+			size = deck.length + size;
 		}
-
-		return newDeck;
+		return deck.slice(size).concat(deck.slice(0, size));
 	}
 
 	public static function technique_stack(deck:Array<Int>):Array<Int> {
